@@ -1,11 +1,7 @@
-.navbar {
-  margin-top: 10px;
-}
-
 .navbar-sub-section {
   display: flex;
   justify-content: space-between;
-  margin: 20px;
+  padding: 13px 20px;
 }
 
 .navbar-btns {
@@ -22,16 +18,10 @@
   width: 40px;
 }
 
-.cart-quantity {
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  background-color: red;
-  color: white;
-  font-size: 18px;
-  font-weight: 800;
-  padding: 0.5px 5px;
-  border-radius: 50%;
+.intro-container {
+  background: url(./assets/property-mobile.jpg);
+  height: 100vh;
+  background-size: cover;
 }
 
 .navbar-btns {
@@ -223,6 +213,11 @@ td {
 }
 
 @media screen and (min-width: 585px) {
+  .intro-container {
+    background: url(./assets/findProperty.jpg);
+    background-size: cover;
+  }
+
   .product-detail-card {
     flex-direction: row;
     gap: 30px;
