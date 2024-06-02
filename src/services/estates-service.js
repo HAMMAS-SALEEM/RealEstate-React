@@ -1,14 +1,14 @@
 import API_URL from '../config/app.config/index'
-import axios from 'axios';
+import axios from 'axios'
 
 export const getApiEstates = async () => {
   try {
-    const res = await axios.get(`${API_URL}/api/estates`);
-    return res;
+    const res = await axios.get(`${API_URL}/api/estates`)
+    return res
   } catch (error) {
-    return error;
+    return error
   }
-};
+}
 
 export const getMyEstatesAPI = async () => {
   const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
@@ -17,40 +17,55 @@ export const getMyEstatesAPI = async () => {
       headers: {
         'x-access-token': accessToken
       }
-    });
-    console.log(res);
-    return res;
+    })
+    return res
   } catch (error) {
-    return error;
+    return error
   }
 }
 
-export const postEstateAPI = async (data) => {
+export const postEstateAPI = async data => {
   const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
   try {
     const res = await axios.post(`${API_URL}/api/estate/create`, data, {
       headers: {
         'x-access-token': accessToken
       }
-    });
-    console.log(res);
-    return res;
+    })
+    return res
   } catch (error) {
-    return error;
+    return error
   }
 }
 
-export const deleteEstateAPI = async () => {
+export const deleteEstateAPI = async id => {
   const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
+  console.log(accessToken)
   try {
     const res = await axios.delete(`${API_URL}/api/estate`, {
+      data: { id },
       headers: {
         'x-access-token': accessToken
       }
-    });
-    console.log(res);
-    return res;
+    })
+    return res
   } catch (error) {
-    return error;
+    return error
+  }
+}
+
+export const updateEstateAPI = async data => {
+  const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
+  try {
+    const res = await axios.put(`${API_URL}/api/estate/update`, {
+      data,
+      headers: {
+        'x-access-token': accessToken
+      }
+    })
+    console.log(res);
+    return res
+  } catch (error) {
+    return error
   }
 }

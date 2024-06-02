@@ -28,50 +28,49 @@ const CreatePost = () => {
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleChange = e => {
     const { name, value } = e.target
-    if(name === 'balcony' || name === 'swimming pool' || name === 'furnished' || name === 'garage'){
-      if(value === 'Yes') {
-        setData({...data, [name]: true })
-        return value
-      } else if(value === 'No') {
-        setData({...data, [name]: false })
-        return value
-      }
-    } else if(name === 'bedrooms' || name === 'bathrooms' || name === 'price') {
-      setData({...data, [name]: Number(value) })
-        return value
+
+    if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
+      setData({ ...data, [name]: value === 'Yes' })
+    } else if (['bedrooms', 'bathrooms', 'price'].includes(name)) {
+      setData({ ...data, [name]: Number(value) })
+    } else if (['street', 'city', 'state', 'country'].includes(name)) {
+      setData({ ...data, address: { ...data.address, [name]: value } })
+    } else {
+      setData({ ...data, [name]: value })
     }
-    else if(name === 'street' || name === 'city' || name === 'state' || name === 'country') {
-      setData({...data, address: {...data.address, [name]: value} })
-        return value
-    }
-    setData({ ...data, [name]: value })
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     console.log(data)
     const res = await postEstateAPI(data)
-    if(res.status === 200) {
-      dispatch(createEstate(res.data))
+    if (res.status === 200) {
+      dispatch(createEstate(res.data.estate))
       setSuccess(true)
     } else {
       setErrors(true)
     }
   }
   return (
-    <div className="p-4">
-      <h1 className="text-center my-5 text-3xl font-bold text-heading-color">Create Post</h1>
+    <div className='p-4'>
+      <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
+        Create Post
+      </h1>
       <PostForm handleChange={handleChange} handleSubmit={handleSubmit} />
-      {
-        success && <div className="text-center text-green-500 text-2xl font-bold">Post Created Successfully</div>
-      }
-      {
-        errors && <div className="text-center text-red-500 text-2xl font-bold">Something went wrong</div>
-      }
+      {success && (
+        <div className='text-center text-green-500 text-2xl font-bold'>
+          Post Created Successfully
+        </div>
+      )}
+      {errors && (
+        <div className='text-center text-red-500 text-2xl font-bold'>
+          Something went wrong
+        </div>
+      )}
     </div>
   )
 }

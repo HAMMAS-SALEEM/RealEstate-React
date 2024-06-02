@@ -4,9 +4,9 @@ import axios from "axios"
 export const authMethods = {
   signup: async (email, password) => {
     try {
-      const user = await axios.post(username, email, password)
+      const user = await axios.post(`${API_URL}/signup`, {username, email, password})
       localStorage.setItem('user', JSON.stringify(user.data))
-      return user.data
+      return user
     } catch (error) {
       return error
     }

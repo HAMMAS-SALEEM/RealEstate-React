@@ -1,17 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SingleEstate from '../components/SingleEstate'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { deleteEstateAPI } from '../services/estates-service'
+import { removeEstate } from '../redux/estates/estates'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
   const userId = JSON.parse(localStorage.getItem('user')).id
+  const [isLoading, setIsLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(false)
 
-  const handleUpdate = () => {
-    console.log('update')
+  const dispatch = useDispatch();
+
+  const handleUpdate = (e) => {
+    console.log(e.target.id)
   }
-  const handleDelete = () => {
-    console.log('delete')
+  const handleDelete = async (e) => {
+    const { id } = e.target
+    const res = await deleteEstateAPI(id)
+    console.log(res);
+    if (res.status === 200) {
+      dispatch(removeEstate(id))
+      setSuccess(true)
+      setError(false)
+    } else {
+      setSuccess(false)
+      setError(true)
+    }
   }
 
   return (
@@ -22,6 +39,16 @@ const ViewListing = () => {
       <h2 className='text-center m-5 text-4xl font-bold text-heading-color underline-offset-1'>
         My Properties
       </h2>
+      {success && (
+        <div className='text-center text-green-500 text-2xl font-bold'>
+          Post Deleted Successfully
+        </div>
+      )}
+      {error && (
+        <div className='text-center text-red-500 text-2xl font-bold'>
+          Something went wrong
+        </div>
+      )}
       <ul className='flex flex-wrap justify-center items-center'>
         {estates.estates &&
           estates.estates
@@ -42,16 +69,18 @@ const ViewListing = () => {
                   />
                   <div className='flex justify-center items-center'>
                     <button
-                      className='bg-black text-white m-2 px-4 py-2 rounded'
+                      className='bg-black text-white m-2 px-4 py-2 rounded font-bold'
                       type='button'
                       onClick={handleUpdate}
+                      id={estate._id}
                     >
                       Update
                     </button>
                     <button
-                      className='bg-black text-white m-4 px-4 py-2 rounded'
+                      className='bg-black text-white m-4 px-4 py-2 rounded font-bold'
                       type='button'
                       onClick={handleDelete}
+                      id={estate._id}
                     >
                       Delete
                     </button>
