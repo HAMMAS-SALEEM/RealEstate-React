@@ -5,7 +5,7 @@ const Filters = () => {
     <div>
       <form className="flex flex-col m-4 gap-2">
         <input type='text' placeholder="Keyword" />
-        <select name="City" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+        <select name="City" className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
           <option>New Mexico</option>
           <option>Missouri</option>
           <option>Texas</option>

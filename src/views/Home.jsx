@@ -1,6 +1,6 @@
 import React from 'react'
 import AppLayout from '../layout/AppLayout'
-import ProductList from '../components/ProductList'
+import EstateList from '../components/EstateList'
 import Intro from '../components/Intro'
 import Filters from '../components/Filters'
 
@@ -9,7 +9,7 @@ const Home = () => {
     <div>
       <Intro />
       <Filters />
-      <ProductList />
+      <EstateList />
     </div>
   )
 }
