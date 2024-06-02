@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import estatesSlice from './products/products'
+import estatesSlice from './estates/estates'
 import authSlice from './auth/auth'
 
 export const store = configureStore({

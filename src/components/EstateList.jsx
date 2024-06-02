@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getApiEstates } from '../services/estates-service'
-import { addEstates } from '../redux/products/products'
+import { addEstates } from '../redux/estates/estates'
 import { useDispatch, useSelector } from 'react-redux'
 import SingleEstate from './SingleEstate'
 
