@@ -7,15 +7,26 @@ import SingleEstate from './SingleEstate'
 const EstateList = () => {
   const dispatch = useDispatch()
   const realEstates = useSelector(store => store.estates)
+  const [error, setError] = useState(false)
+
+  const handleGetEstates = () => {
+    getApiEstates()
+    .then(estates => {
+      dispatch(addEstates(estates.data.estates))
+      setError(false);
+    })
+    .catch((error) => {
+      setError(true);
+      return error;
+    })
+  }
 
   useEffect(() => {
-    getApiEstates().then(estates => {
-      dispatch(addEstates(estates.data.estates))
-    })
-  }, [dispatch])
+    handleGetEstates()
+  }, [])
   return (
     <>
-      <h2 className='featured-properties-section-title'>FEATURED PROPERTIES</h2>
+      <h2 className='featured-properties-section-title text-heading-color'>FEATURED PROPERTIES</h2>
       <div className='estates-container'>
         {realEstates.estates &&
           realEstates.estates.map(estate => (
@@ -32,6 +43,7 @@ const EstateList = () => {
               type={estate.type}
             />
           ))}
+          {error && <button className="bg-red-500 text-white px-4 py-2 mb-1" onClick={handleGetEstates}>Try Again</button>}
       </div>
     </>
   )
