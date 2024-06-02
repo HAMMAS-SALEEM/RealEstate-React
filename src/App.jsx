@@ -8,8 +8,6 @@ import ProtectedRoute from './routes/ProtectedRoutes'
 
 const Home = lazy(() => import('./views/Home'))
 const Detail = lazy(() => import('./views/Detail'))
-const Cart = lazy(() => import('./views/Cart'))
-const Checkout = lazy(() => import('./views/Checkout'))
 const Login = lazy(() => import('./views/Login'))
 const Register = lazy(() => import('./views/Register'))
 const NotFound = lazy(() => import('./views/NotFound'))
@@ -33,8 +31,6 @@ const App = () => {
         <Route element={<ProtectedRoute user={user.signedIn} />}>
           <Route path='/' element={<Home />} />
           <Route path='/product/:id' element={<Detail />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/checkout' element={<Checkout />} />
         </Route>
         <Route element={<PublicRoute user={user.signedIn} />}>
           <Route path='/login' element={<Login />} />

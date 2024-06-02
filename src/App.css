@@ -1,11 +1,7 @@
-.navbar {
-  margin-top: 10px;
-}
-
 .navbar-sub-section {
   display: flex;
   justify-content: space-between;
-  margin: 20px;
+  padding: 13px 20px;
 }
 
 .navbar-btns {
@@ -22,16 +18,10 @@
   width: 40px;
 }
 
-.cart-quantity {
-  position: absolute;
-  right: 20px;
-  top: 15px;
-  background-color: red;
-  color: white;
-  font-size: 18px;
-  font-weight: 800;
-  padding: 0.5px 5px;
-  border-radius: 50%;
+.intro-container {
+  background: url(./assets/property-mobile.jpg);
+  height: 100vh;
+  background-size: cover;
 }
 
 .navbar-btns {
@@ -50,7 +40,7 @@
   transform: translateX(-100%);
 }
 
-.products-container {
+.estates-container {
   background-color: bisque;
   padding: 15px;
   display: flex;
@@ -59,36 +49,72 @@
   gap: 35px;
 }
 
-.product-card {
+.estate-card {
   width: 300px;
   gap: 10px;
+  position: relative;
 }
 
-.product-image {
-  width: 200px;
+.estate-image {
+  width: 100%;
   height: 200px;
 }
 
-.product-title {
-  font-size: 20px;
+.estate-title {
+  font-size: 28px;
+  color: rgb(50,50,50);
+  font-weight: 700;
+  margin-left: 12px;
 }
 
-.product-description {
+.estate-description {
   font-size: 15px;
+  margin-left: 12px;
+  color: grey;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.product-price {
-  font-size: 20px;
+.estate-price {
+  font-size: 25px;
   font-weight: 600;
+  color: rgb(148,112,84);
+  background-color: white;
+  position: absolute;
+  left: 10px;
+  top: 150px;
+  padding: 2px 10px;
 }
 
-.product-buy-btn-container {
+.estate-type {
+  background-color: rgb(148,112,84);
+  padding: 7px 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  position: absolute;
+  left: 10px;
+  top: 12px;
+}
+
+.estate-address {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(180,149,124);
+}
+
+.estate-icon-bedroom {
+  width: 22px;
+  height: 22px;
+}
+
+.estate-buy-btn-container {
   display: flex;
   gap: 10px;
   justify-content: center;
 }
 
-.product-buy-btn {
+.estate-buy-btn {
   width: 120px;
   height: 30px;
   font-size: 16px;
@@ -97,39 +123,40 @@
   border: none;
 }
 
-.product-link-to-details {
+.estate-link-to-details {
   text-decoration: none;
   background-color: bisque;
   color: black;
   font-weight: 900;
-  width: 84%;
+  width: 92%;
   padding: 6px 0;
   text-align: center;
+  align-self: center;
+  display: none;
 }
 
-.product-title,
-.product-description {
+.estate-title,
+.estate-description {
   text-align: justify;
 }
 
-.product-detail-sub-container {
+.estate-detail-sub-container {
   display: flex;
   flex-direction: column;
   gap: 40px;
   margin-top: 30px;
 }
 
-.product-detail-image {
+.estate-detail-image {
   width: 100%;
 }
 
-.product-card,
-.product-detail-card {
+.estate-card,
+.estate-detail-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
-  padding: 25px 20px;
+  padding: 0 0 25px 0;
   margin: 10px;
   background-color: white;
 }
@@ -223,19 +250,24 @@ td {
 }
 
 @media screen and (min-width: 585px) {
-  .product-detail-card {
+  .intro-container {
+    background: url(./assets/findProperty.jpg);
+    background-size: cover;
+  }
+
+  .estate-detail-card {
     flex-direction: row;
     gap: 30px;
     justify-content: space-evenly;
   }
 
-  .product-detail-sub-container {
+  .estate-detail-sub-container {
     width: 300px;
     background-color: bisque;
     padding: 30px;
   }
 
-  .product-detail-image {
+  .estate-detail-image {
     width: 400px;
     height: 400px;
   }

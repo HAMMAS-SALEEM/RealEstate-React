@@ -1,14 +1,17 @@
 import React from 'react'
 import AppLayout from '../layout/AppLayout'
-import ProductList from '../components/ProductList'
+import EstateList from '../components/EstateList'
+import Intro from '../components/Intro'
+import Filters from '../components/Filters'
 
 const Home = () => {
-
   return (
     <div>
-      <ProductList />
+      <Intro />
+      <Filters />
+      <EstateList />
     </div>
   )
 }
 
-export default AppLayout()(Home);
+export default AppLayout()(Home)

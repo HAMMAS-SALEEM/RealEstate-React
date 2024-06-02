@@ -1,5 +1,5 @@
 import React from 'react'
-import HamburgerIcon from '../assets/hamburger.svg';
+import HamburgerIcon from '../assets/hamburger-white-new.svg';
 
 const BurgerIcon = ({handleNavbar}) => {
   return (
