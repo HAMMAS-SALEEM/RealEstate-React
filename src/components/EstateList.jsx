@@ -6,7 +6,7 @@ import SingleEstate from './SingleEstate'
 
 const EstateList = () => {
   const dispatch = useDispatch()
-  const realEstates = useSelector(store => store.estates);
+  const realEstates = useSelector(store => store.estates)
 
   useEffect(() => {
     getApiEstates().then(estates => {
@@ -14,23 +14,26 @@ const EstateList = () => {
     })
   }, [dispatch])
   return (
-    <div className='estates-container'>
-      {realEstates.estates &&
-        realEstates.estates.map(estate => (
-          <SingleEstate
-            key={estate._id}
-            id={estate._id}
-            name={estate.name}
-            propertySize={estate.propertySize}
-            price={estate.price}
-            image={estate.image}
-            bedrooms={estate.bedrooms}
-            bathrooms={estate.bathrooms}
-            address={estate.address}
-            type={estate.type}
-          />
-        ))}
-    </div>
+    <>
+      <h2 className='featured-properties-section-title'>FEATURED PROPERTIES</h2>
+      <div className='estates-container'>
+        {realEstates.estates &&
+          realEstates.estates.map(estate => (
+            <SingleEstate
+              key={estate._id}
+              id={estate._id}
+              name={estate.name}
+              propertySize={estate.propertySize}
+              price={estate.price}
+              image={estate.image}
+              bedrooms={estate.bedrooms}
+              bathrooms={estate.bathrooms}
+              address={estate.address}
+              type={estate.type}
+            />
+          ))}
+      </div>
+    </>
   )
 }
 

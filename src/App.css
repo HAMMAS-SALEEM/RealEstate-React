@@ -34,6 +34,7 @@
 
 .navbar-open {
   transform: translateX(0);
+  z-index: 1;
 }
 
 .navbar-close {
@@ -41,7 +42,6 @@
 }
 
 .estates-container {
-  background-color: bisque;
   padding: 15px;
   display: flex;
   flex-wrap: wrap;
@@ -49,10 +49,23 @@
   gap: 35px;
 }
 
+.featured-properties-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(50,50,50);
+  text-align: center;
+}
+
 .estate-card {
   width: 300px;
   gap: 10px;
   position: relative;
+  border: 1px solid rgba(160,122,90, 0.3);
+}
+
+.estate-card:hover {
+  box-shadow: 0 0 1px black;
+  transition: all 0.2s ease-in-out;
 }
 
 .estate-image {

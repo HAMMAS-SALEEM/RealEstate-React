@@ -20,12 +20,5 @@ export const authMethods = {
       return error
     }
   },
-  signOut: async () => {
-    try {
-      await signOut(auth)
-      localStorage.clear()
-    } catch (error) {
-      return error
-    }
-  }
+  signOut: () => localStorage.clear()
 }
