@@ -4,26 +4,33 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { deleteEstateAPI } from '../services/estates-service'
 import { removeEstate } from '../redux/estates/estates'
+import UpdatePopup from '../components/UpdatePopup'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
   const userId = JSON.parse(localStorage.getItem('user')).id
-  const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
+  const [visiblePopup, setVisiblePopup] = useState(false)
+  const [info, setInfo] = useState({})
 
-  const reduxEstates = useSelector((store) => store.estates)
-  const dispatch = useDispatch();
+  const reduxEstates = useSelector(store => store.estates)
+  const dispatch = useDispatch()
 
-  const handleUpdate = (e) => {
+  const handleUpdate = e => {
     const { id } = e.target
-    console.log(reduxEstates.estates.find((est) => est._id === id));
+    let targetObject = { ...reduxEstates.estates.find(est => est._id === id) }
+    delete targetObject.user_id
+    delete targetObject._id
+    delete targetObject._v
+    setInfo(targetObject)
+    setVisiblePopup(true)
   }
-  const handleDelete = async (e) => {
+  const handleDelete = async e => {
     const { id } = e.target
     const res = await deleteEstateAPI(id)
-    console.log(res);
+    console.log(res)
     if (res.status === 200) {
       dispatch(removeEstate(id))
       setSuccess(true)
@@ -35,8 +42,11 @@ const ViewListing = () => {
   }
 
   return (
-    <div>
-      <NavLink to={'/dashboard'} className='absolute left-2 top-3 bg-black text-white font-bold px-1 py-0.5 rounded'>
+    <div className={visiblePopup && 'overflow-hidden'}>
+      <NavLink
+        to={'/dashboard'}
+        className='absolute left-2 top-3 bg-black text-white font-bold px-1 py-0.5 rounded'
+      >
         Back
       </NavLink>
       <h2 className='text-center m-5 text-4xl font-bold text-heading-color underline-offset-1'>
@@ -92,6 +102,17 @@ const ViewListing = () => {
               )
             })}
       </ul>
+      {visiblePopup && (
+        <div className='absolute top-0 right-0 left-0 backdrop-blur h-screen overflow-y-auto'>
+          <div className='bg-black opacity-70'>
+            <UpdatePopup
+              info={info}
+              setVisiblePopup={setVisiblePopup}
+              setInfo={setInfo}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
