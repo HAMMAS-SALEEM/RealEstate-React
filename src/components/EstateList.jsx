@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { getApiProducts } from '../services/products-service'
-import { addProducts } from '../redux/products/products'
-import { useDispatch } from 'react-redux'
-import realEstates from '../data/realEstates'
+import { getApiEstates } from '../services/estates-service'
+import { addEstates } from '../redux/products/products'
+import { useDispatch, useSelector } from 'react-redux'
 import SingleEstate from './SingleEstate'
 
 const EstateList = () => {
+  const dispatch = useDispatch()
+  const realEstates = useSelector(store => store.estates);
+
+  useEffect(() => {
+    getApiEstates().then(estates => {
+      dispatch(addEstates(estates.data.estates))
+    })
+  }, [dispatch])
   return (
     <div className='estates-container'>
       {realEstates.estates &&
         realEstates.estates.map(estate => (
           <SingleEstate
-            key={estate.id}
-            id={estate.id}
+            key={estate._id}
+            id={estate._id}
             name={estate.name}
             propertySize={estate.propertySize}
             price={estate.price}

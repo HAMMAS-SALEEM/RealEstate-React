@@ -15,10 +15,9 @@ const Login = () => {
   const handleSignin = async e => {
     e.preventDefault()
     const res = await authMethods.signin(email, password)
-    if (!res.accessToken) {
-      if (res[0] === 'auth/invalid-credential') {
-        setError('Invalid Email or Password')
-      }
+    if (res.status !== 200) {
+      setError(res.response.data.message)
+      return
     } else {
       setError('')
       dispatch(handleAuth())

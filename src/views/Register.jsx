@@ -6,6 +6,7 @@ import { handleAuth } from '../redux/auth/auth'
 import { NavLink } from 'react-router-dom'
 
 const Register = () => {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')

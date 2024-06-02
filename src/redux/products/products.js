@@ -2,20 +2,31 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   status: 'idle',
-  products: [],
+  estates: [],
   error: null,
   loading: false
 }
 
-export const productsSlice = createSlice({
-  name: 'products',
+export const estatesSlice = createSlice({
+  name: 'estates',
   initialState,
   reducers: {
-    addProducts: (state, action) => {
-      state.products = action.payload;
+    addEstates: (state, action) => {
+      state.estates = action.payload;
+    },
+    createEstate: (state, action) => {
+      state.estates.push(action.payload);
+    },
+    removeEstate: (state, action) => {
+      state.estates = state.estates.filter(estate => estate._id !== action.payload);
+    },
+    updateEstate: (state, action) => {
+      state.estates = state.estates.map(estate =>
+        estate._id === action.payload._id? action.payload : estate
+      )
     }
   }
 })
 
-export const { addProducts } = productsSlice.actions
-export default productsSlice.reducer;
+export const { addEstates, createEstate, removeEstate, updateEstate } = estatesSlice.actions
+export default estatesSlice.reducer;
