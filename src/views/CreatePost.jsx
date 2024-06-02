@@ -60,7 +60,7 @@ const CreatePost = () => {
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Create Post
       </h1>
-      <PostForm handleChange={handleChange} handleSubmit={handleSubmit} />
+      <PostForm handleChange={handleChange} handleSubmit={handleSubmit} data={data} />
       {success && (
         <div className='text-center text-green-500 text-2xl font-bold'>
           Post Created Successfully

@@ -8,14 +8,17 @@ import { removeEstate } from '../redux/estates/estates'
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
   const userId = JSON.parse(localStorage.getItem('user')).id
+  const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+  const reduxEstates = useSelector((store) => store.estates)
   const dispatch = useDispatch();
 
   const handleUpdate = (e) => {
-    console.log(e.target.id)
+    const { id } = e.target
+    console.log(reduxEstates.estates.find((est) => est._id === id));
   }
   const handleDelete = async (e) => {
     const { id } = e.target
