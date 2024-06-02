@@ -5,21 +5,21 @@ import { addProducts } from '../redux/products/products'
 import { useDispatch } from 'react-redux'
 
 const ProductList = () => {
-  const [productsList, setProductsList] = useState([]);
- 
-  const dispatch = useDispatch();
+  const [productsList, setProductsList] = useState([])
+
+  const dispatch = useDispatch()
 
   const fetchAPIProducts = async () => {
-    const res = await getApiProducts();
-    setProductsList(res.data);
+    const res = await getApiProducts()
+    setProductsList(res.data)
     dispatch(addProducts(res.data))
   }
 
   useEffect(() => {
-    fetchAPIProducts();
+    fetchAPIProducts()
   }, [])
   return (
-    <div className="products-container">
+    <div className='products-container'>
       {productsList &&
         productsList.map(product => (
           <SingleProduct
@@ -35,4 +35,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList;
+export default ProductList
