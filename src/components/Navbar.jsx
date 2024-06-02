@@ -23,7 +23,7 @@ const Navbar = ({ navbar }) => {
       <button type='button'>Home</button>
       <button type='button'>Store</button>
       <button type='button'>Contact</button>
-      <NavLink to={"/myestates"}>MyEstates</NavLink>
+      <NavLink to={"/dashboard"}>MyEstates</NavLink>
       <button type='button' onClick={handleSignOut}>
         Sign Out
       </button>

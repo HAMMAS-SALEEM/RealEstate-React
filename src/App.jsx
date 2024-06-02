@@ -8,7 +8,9 @@ import ProtectedRoute from './routes/ProtectedRoutes'
 
 const Home = lazy(() => import('./views/Home'))
 const Detail = lazy(() => import('./views/Detail'))
-const MyEstates = lazy(() => import('./views/MyEstates'))
+const Dashboard = lazy(() => import('./views/Dashboard'))
+const CreatePost = lazy(() => import('./views/CreatePost'))
+const ViewListing = lazy(() => import('./views/ViewListing'))
 const Login = lazy(() => import('./views/Login'))
 const Register = lazy(() => import('./views/Register'))
 const NotFound = lazy(() => import('./views/NotFound'))
@@ -21,18 +23,21 @@ const App = () => {
   const token = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
-    if (token) {
+    if (token && !user.signedIn) {
       dispatch(handleAuth())
       navigate('/')
     }
-  }, [])
+  }, [token, user.signedIn, dispatch, navigate])
+
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route element={<ProtectedRoute user={user.signedIn} />}>
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/' element={<Home />} />
           <Route path='/product/:id' element={<Detail />} />
-          <Route path='/myestates' element={<MyEstates />} />
+          <Route path='/create_post' element={<CreatePost />} />
+          <Route path='/view_listing' element={<ViewListing />} />
         </Route>
         <Route element={<PublicRoute user={user.signedIn} />}>
           <Route path='/login' element={<Login />} />

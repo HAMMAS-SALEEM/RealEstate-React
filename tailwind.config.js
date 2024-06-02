@@ -18,6 +18,7 @@ export default {
             'newblue': '1657baa',
             'purple': 'a155b9',
             'pink': 'f765a3',
+            'heading-color': '#b4957c'
           },
           opacity: {
             '54': '.54'

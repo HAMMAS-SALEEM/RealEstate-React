@@ -12,24 +12,27 @@ export const estatesSlice = createSlice({
   initialState,
   reducers: {
     addEstates: (state, action) => {
-      state.estates = action.payload;
+      state.estates = action.payload
     },
     createEstate: (state, action) => {
-      state.estates.push(action.payload);
+      state.estates.push(action.payload)
     },
     removeEstate: (state, action) => {
-      state.estates = state.estates.filter(estate => estate._id !== action.payload);
+      state.estates = state.estates.filter(
+        estate => estate._id !== action.payload
+      )
     },
     updateEstate: (state, action) => {
       state.estates = state.estates.map(estate =>
-        estate._id === action.payload._id? action.payload : estate
+        estate._id === action.payload._id ? action.payload : estate
       )
     },
-    getEstates: (state) => {
+    getEstates: state => {
       return state.estates
     }
   }
 })
 
-export const { addEstates, createEstate, removeEstate, updateEstate, getEstates } = estatesSlice.actions
-export default estatesSlice.reducer;
+export const { addEstates, createEstate, removeEstate, updateEstate, getEstates } =
+  estatesSlice.actions
+export default estatesSlice.reducer
