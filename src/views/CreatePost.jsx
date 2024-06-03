@@ -5,6 +5,7 @@ import { createEstate } from '../redux/estates/estates'
 import { useDispatch } from 'react-redux'
 import SuccessMessage from '../components/SuccessMessage'
 import ErrorMessage from '../components/ErrorMessage'
+import Loader from '../components/Loader'
 
 const CreatePost = () => {
   const [data, setData] = useState({
@@ -28,9 +29,12 @@ const CreatePost = () => {
   })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [error, setErrors] = useState(false)
+  const [error, setError] = useState(false)
 
   const dispatch = useDispatch()
+
+  const handleSuccess = () => setSuccess(prev => !prev)
+  const handleError = () => setError(prev => !prev)
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -48,13 +52,15 @@ const CreatePost = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log(data)
+    setLoading(true)
     const res = await postEstateAPI(data)
     if (res.status === 200) {
       dispatch(createEstate(res.data.estate))
       setSuccess(true)
+      setLoading(false)
     } else {
-      setErrors(true)
+      setError(true)
+      setLoading(false)
     }
   }
   return (
@@ -67,8 +73,23 @@ const CreatePost = () => {
         handleSubmit={handleSubmit}
         data={data}
       />
-      <SuccessMessage text={"Post Created Successfully"} success={success} />
-      <ErrorMessage text={"Try Again"} error={error} />
+      <div className="fixed top-0 left-0 right-0">
+        <SuccessMessage
+          text={'Post Created Successfully'}
+          success={success}
+          handleMessage={handleSuccess}
+        />
+        <ErrorMessage
+          text={'Try Again'}
+          error={error}
+          handleMessage={handleError}
+        />
+      </div>
+      {loading && (
+        <div className='bg-black fixed top-0 bottom-0 right-0 left-0 flex justify-center items-center'>
+          <Loader />
+        </div>
+      )}
     </div>
   )
 }

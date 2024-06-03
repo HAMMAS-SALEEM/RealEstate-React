@@ -8,6 +8,7 @@ import UpdatePopup from '../components/UpdatePopup'
 import ErrorMessage from '../components/ErrorMessage'
 import SuccessMessage from '../components/SuccessMessage'
 import SuccessPopup from '../components/SuccessPopup'
+import Loader from '../components/Loader'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
@@ -16,12 +17,13 @@ const ViewListing = () => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [visiblePopup, setVisiblePopup] = useState(false)
-  const [updateSuccess, setUpdateSuccess] = useState(true)
+  const [updateSuccess, setUpdateSuccess] = useState(false)
   const [info, setInfo] = useState({})
 
   const handleError = () => setError(prev => !prev)
   const handleSuccess = () => setSuccess(prev => !prev)
-  const handleUpdateSuccess = () => setUpdateSuccess(prev => !prev)
+  const handleUpdateSuccess = () => setUpdateSuccess(prev =>!prev)
+  const handleLoading = () => setIsLoading(prev => !prev)
 
   const reduxEstates = useSelector(store => store.estates)
   const dispatch = useDispatch()
@@ -35,14 +37,16 @@ const ViewListing = () => {
 
   const handleDelete = async e => {
     const { id } = e.target
+    setIsLoading(true)
     const res = await deleteEstateAPI(id)
-
     if (res.status === 200) {
       dispatch(removeEstate(id))
+      setIsLoading(false)
       setSuccess(true)
       setError(false)
     } else {
       setSuccess(false)
+      setIsLoading(false)
       setError(true)
     }
   }
@@ -105,12 +109,14 @@ const ViewListing = () => {
               info={info}
               setVisiblePopup={setVisiblePopup}
               setInfo={setInfo}
-              handleUpdateSuccess={handleUpdateSuccess}
+              setUpdateSuccess={setUpdateSuccess}
+              handleLoading={handleLoading}
+              setError={setError}
             />
           </div>
         </div>
       )}
-      <div className='sticky bottom-0'>
+      <div className='fixed top-0 right-0 left-0'>
         <ErrorMessage
           text={'Try Again'}
           error={error}
@@ -127,6 +133,11 @@ const ViewListing = () => {
         text={'Post Updated Successfully'}
         handlePopup={handleUpdateSuccess}
       />
+      {isLoading && (
+        <div className='bg-black fixed top-0 bottom-0 right-0 left-0 flex justify-center'>
+          <Loader />
+        </div>
+      )}
     </div>
   )
 }

@@ -1,9 +1,15 @@
 import React from 'react'
-import { Spinner } from "flowbite-react";
+import { RotatingLines } from 'react-loader-spinner'
 
 const Loader = () => {
   return (
-    <Spinner aria-label="Default status example" />
+    <RotatingLines
+      strokeColor="#b4957c"
+      strokeWidth="5"
+      animationDuration="0.75"
+      width="96"
+      visible={true}
+    />
   )
 }
 
