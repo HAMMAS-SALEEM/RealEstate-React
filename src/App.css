@@ -5,12 +5,27 @@
 }
 
 .navbar-btns {
-  position: absolute;
+  position: fixed;
+  top: o;
+  bottom: 0;
+  display: flex;
+  padding: 75px 5px 5px 5px;
+  height: 100vh;
+  min-width: 200px;
 }
 
 .navbar-btn {
-  background: none;
+  background: black;
+  color: white;
+  font-weight: bolder;
   border: none;
+}
+
+.navbar-close-btn {
+  align-self: end;
+  position: absolute;
+  top: 10px;
+
 }
 
 .hamburger-icon {
@@ -29,6 +44,7 @@
   flex-direction: column;
   width: 20%;
   row-gap: 5px;
+  background-color: white;
   transition: all 1s ease-in-out;
 }
 
@@ -39,6 +55,7 @@
 
 .navbar-close {
   transform: translateX(-100%);
+  z-index: 1;
 }
 
 .estates-container {

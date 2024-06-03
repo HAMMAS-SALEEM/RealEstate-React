@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import SuccessMessage from '../components/SuccessMessage'
 import ErrorMessage from '../components/ErrorMessage'
 import Loader from '../components/Loader'
+import AppLayout from '../layout/AppLayout'
 
 const CreatePost = () => {
   const [data, setData] = useState({
@@ -55,17 +56,17 @@ const CreatePost = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    // setLoading(true)
+    setLoading(true)
     console.log(data);
-    // const res = await postEstateAPI(data)
-    // if (res.status === 200) {
-    //   dispatch(createEstate(res.data.estate))
-    //   setSuccess(true)
-    //   setLoading(false)
-    // } else {
-    //   setError(true)
-    //   setLoading(false)
-    // }
+    const res = await postEstateAPI(data)
+    if (res.status === 200) {
+      dispatch(createEstate(res.data.estate))
+      setSuccess(true)
+      setLoading(false)
+    } else {
+      setError(true)
+      setLoading(false)
+    }
   }
   return (
     <div className='p-4'>
@@ -98,4 +99,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default AppLayout()(CreatePost)
