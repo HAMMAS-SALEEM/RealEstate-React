@@ -5,6 +5,7 @@ import { handleAuth } from './redux/auth/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import PublicRoute from './routes/PublicRoutes'
 import ProtectedRoute from './routes/ProtectedRoutes'
+import { cookieGetter } from './utils/cookieHandler'
 
 const Home = lazy(() => import('./views/Home'))
 const Detail = lazy(() => import('./views/Detail'))
@@ -20,7 +21,7 @@ const App = () => {
   const navigate = useNavigate()
 
   const user = useSelector(store => store.auth)
-  const token = JSON.parse(localStorage.getItem('user'))
+  const token = cookieGetter();
 
   useEffect(() => {
     if (token && !user.signedIn) {

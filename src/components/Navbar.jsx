@@ -1,15 +1,15 @@
 import React from 'react'
-import { authMethods } from '../services/auth-service'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { handleAuth } from '../redux/auth/auth'
+import { deleteCookie } from '../utils/cookieHandler'
 
 const Navbar = ({ navbar }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleSignOut = () => {
-    authMethods.signOut()
+    deleteCookie("accessToken");
     dispatch(handleAuth())
     navigate('/login')
   }

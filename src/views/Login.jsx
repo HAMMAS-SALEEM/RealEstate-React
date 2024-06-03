@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { authMethods } from '../services/auth-service'
 import { useDispatch } from 'react-redux'
 import { handleAuth } from '../redux/auth/auth'
 import AuthForm from '../components/AuthForm'
 import { NavLink } from 'react-router-dom'
+import { deleteCookie } from '../utils/cookieHandler'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -48,6 +49,10 @@ const Login = () => {
     if (fieldName === 'email') setEmail(value)
     if (fieldName === 'password') setPassword(value)
   }
+
+  useEffect(() => {
+    deleteCookie("accessToken");
+  })
 
   return (
     <div className='flex flex-col justify-center items-center'>
