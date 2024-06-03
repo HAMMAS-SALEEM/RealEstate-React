@@ -9,23 +9,26 @@ import Loader from '../components/Loader'
 
 const CreatePost = () => {
   const [data, setData] = useState({
-    name: '',
+    name: 'House',
     price: '',
     propertySize: '',
     address: {
       street: '',
       city: '',
       state: '',
-      country: ''
+      country: 'Pakistan',
     },
     image: '',
-    type: '',
+    type: 'For Sale',
     bedrooms: '',
     bathrooms: '',
     furnished: false,
     garage: false,
     swimmingPool: false,
-    balcony: false
+    balcony: false,
+    floors: "",
+    rooms: "",
+    phoneNumber: ""
   })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -41,7 +44,7 @@ const CreatePost = () => {
 
     if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
       setData({ ...data, [name]: value === 'Yes' })
-    } else if (['bedrooms', 'bathrooms', 'price'].includes(name)) {
+    } else if (['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)) {
       setData({ ...data, [name]: Number(value) })
     } else if (['street', 'city', 'state', 'country'].includes(name)) {
       setData({ ...data, address: { ...data.address, [name]: value } })
@@ -52,16 +55,17 @@ const CreatePost = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    setLoading(true)
-    const res = await postEstateAPI(data)
-    if (res.status === 200) {
-      dispatch(createEstate(res.data.estate))
-      setSuccess(true)
-      setLoading(false)
-    } else {
-      setError(true)
-      setLoading(false)
-    }
+    // setLoading(true)
+    console.log(data);
+    // const res = await postEstateAPI(data)
+    // if (res.status === 200) {
+    //   dispatch(createEstate(res.data.estate))
+    //   setSuccess(true)
+    //   setLoading(false)
+    // } else {
+    //   setError(true)
+    //   setLoading(false)
+    // }
   }
   return (
     <div className='p-4'>

@@ -1,6 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Country, State, City } from 'country-state-city'
 
 const PostForm = ({ handleChange, handleSubmit, data }) => {
+  const [countries, setCountries] = useState([])
+  const [singleCountry, setSingleCountry] = useState()
+  const [state, setState] = useState()
+  const [singleState, setSingleState] = useState()
+  const [stateData, setStateData] = useState()
+  const [cities, setCities] = useState()
+  const [cityData, setCitiesData] = useState()
+
+  const getStatesOfCountry = country => {
+    const country = State.getStatesOfCountry(countries.find(c => c.name === country)?.isoCode)
+    setSingleCountry(country)
+  }
+
+  const getCitiesofState = state => {
+    const state = City.getCitiesOfState(singleCountry?.isoCode, stateData.find(s => s.name === state)?.isoCode)
+    setSingleState(state)
+  }
+
+  const handleCountries = async () => {
+    let countryData = Country.getAllCountries()
+    setCountries(countryData)
+  }
+
+  useEffect(() => {
+    handleCountries()
+  }, [])
+
+  useEffect(() => {
+    setStateData()
+  }, [data.address.country])
+
+  useEffect(() => {
+    console.log('State Changed')
+  }, [data.address.state])
+
+  useEffect(() => {
+    console.log('City Changed')
+  }, [data.address.city])
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
       <label>Name:</label>
@@ -70,8 +109,21 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='state'
         value={data.address.state}
       />
+      <select
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        name='state'
+        value={data.address.state}
+      >
+        {countries.map(country => (
+          <option key={country.name} value={country.name}>
+            {country.name}
+          </option>
+        ))}
+      </select>
       <label>Country:</label>
-      <input
+      {/* <input
         required
         className='border py-1 indent-3'
         onChange={handleChange}
@@ -79,7 +131,20 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         placeholder='Country'
         name='country'
         value={data.address.country}
-      />
+      /> */}
+      <select
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        name='country'
+        value={data.address.country}
+      >
+        {countries.map(country => (
+          <option key={country.name} value={country.name}>
+            {country.name}
+          </option>
+        ))}
+      </select>
       <label>Image URL:</label>
       <input
         required
@@ -165,6 +230,36 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
+      <label>Total Rooms:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Total Rooms'
+        value={data.rooms}
+        name='rooms'
+      />
+      <label>Floors:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Floors'
+        value={data.floors}
+        name='floors'
+      />
+      <label>Phone Number:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Phone Number'
+        value={data.phoneNumber}
+        name='phoneNumber'
+      />
       <button className='w-100 bg-black text-white py-1 rounded' type='submit'>
         Submit
       </button>
