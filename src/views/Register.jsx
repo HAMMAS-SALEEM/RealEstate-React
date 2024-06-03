@@ -15,27 +15,39 @@ const Register = () => {
 
   const handleSignup = async e => {
     e.preventDefault()
-    const res = await authMethods.signup(email, password)
-    if (res[0] === 'auth/email-already-in-use') {
-      setError('Email already in use')
-    } else {
+    const res = await authMethods.signup(username, email, password)
+    if (res.status === 200) {
       dispatch(handleAuth())
       setError('')
+    } else {
+      setError(res.response.data.message)
     }
   }
 
   const title = "Register"
   const desc = 'Create a new account!'
 
+  const fields = [
+    { name: 'username', label: 'Username', type: 'text', value: username, required: true },
+    { name: 'email', label: 'Email', type: 'text', value: email, required: true },
+    { name: 'password', label: 'Password', type: 'password', value: password, required: true }
+  ]
+
+  const setFieldValue = (fieldName, value) => {
+    if (fieldName === 'username') setUsername(value)
+    if (fieldName === 'email') setEmail(value)
+    if (fieldName === 'password') setPassword(value)
+  }
+
   return (
     <div className="flex flex-col justify-center items-center">
       <AuthForm
         handleAuth={handleSignup}
-        setEmail={setEmail}
-        setPassword={setPassword}
+        setFieldValue={setFieldValue}
         title={title}
         desc={desc}
         error={error}
+        fields={fields}
       />
       <NavLink to='/login'>Already have account?</NavLink>
     </div>
