@@ -6,13 +6,17 @@ import { useDispatch } from 'react-redux'
 import SuccessMessage from './SuccessMessage'
 import ErrorMessage from './ErrorMessage'
 
-const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
+const UpdatePopup = ({ info, setVisiblePopup, setInfo, handleUpdateSuccess }) => {
   const [data, setData] = useState(info)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState('')
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+
+  const handleSuccess = () => setSuccess((prev) => !prev)
+
+  const handleError = () => setError((prev) =>!prev)
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -39,7 +43,8 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
     if (res.status === 200) {
       dispatch(updateEstate(data))
       setSuccess(true)
-      handleVisibilityPopup();
+      handleUpdateSuccess();
+      handleVisibilityPopup()
     } else {
       setError(true)
       setMessage(res.message)
@@ -48,7 +53,13 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
 
   return (
     <div className='p-4'>
-      <button type='="button' onClick={handleVisibilityPopup} className="font-bold text-xl text-white">X</button>
+      <button
+        type='="button'
+        onClick={handleVisibilityPopup}
+        className='font-bold text-xl text-white'
+      >
+        X
+      </button>
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Update Post
       </h1>
@@ -59,8 +70,10 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
           data={data}
         />
       }
-      <ErrorMessage error={error} text={message} />
-      <SuccessMessage success={success} text={message} />
+      <div className="sticky">
+        <ErrorMessage error={error} text={message} handleMessage={handleError} />
+        <SuccessMessage success={success} text={message} handleMessage={handleSuccess} />
+      </div>
     </div>
   )
 }

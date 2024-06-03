@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { deleteEstateAPI } from '../services/estates-service'
 import { removeEstate } from '../redux/estates/estates'
+import UpdatePopup from '../components/UpdatePopup'
 import ErrorMessage from '../components/ErrorMessage'
 import SuccessMessage from '../components/SuccessMessage'
+import SuccessPopup from '../components/SuccessPopup'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
@@ -14,10 +16,12 @@ const ViewListing = () => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [visiblePopup, setVisiblePopup] = useState(false)
+  const [updateSuccess, setUpdateSuccess] = useState(true)
   const [info, setInfo] = useState({})
 
-  const handleError = () => setError((prev) => !prev)
-  const handleSuccess = () => setSuccess((prev) =>!prev)
+  const handleError = () => setError(prev => !prev)
+  const handleSuccess = () => setSuccess(prev => !prev)
+  const handleUpdateSuccess = () => setUpdateSuccess(prev => !prev)
 
   const reduxEstates = useSelector(store => store.estates)
   const dispatch = useDispatch()
@@ -95,20 +99,34 @@ const ViewListing = () => {
             })}
       </ul>
       {visiblePopup && (
-        <div className='absolute top-0 right-0 left-0 backdrop-blur h-screen overflow-y-auto'>
-          <div className='bg-black opacity-70'>
+        <div className='fixed top-0 right-0 left-0 backdrop-blur h-screen overflow-y-auto'>
+          <div className='bg-black'>
             <UpdatePopup
               info={info}
               setVisiblePopup={setVisiblePopup}
               setInfo={setInfo}
+              handleUpdateSuccess={handleUpdateSuccess}
             />
           </div>
         </div>
       )}
-      <div className="sticky bottom-0">
-        <ErrorMessage text={"Try Again"} error={error} handleMessage={handleError} />
-        <SuccessMessage text={"Post Deleted Successfully"} success={success} handleMessage={handleSuccess} />
+      <div className='sticky bottom-0'>
+        <ErrorMessage
+          text={'Try Again'}
+          error={error}
+          handleMessage={handleError}
+        />
+        <SuccessMessage
+          text={'Post Deleted Successfully'}
+          success={success}
+          handleMessage={handleSuccess}
+        />
       </div>
+      <SuccessPopup
+        success={updateSuccess}
+        text={'Post Updated Successfully'}
+        handlePopup={handleUpdateSuccess}
+      />
     </div>
   )
 }
