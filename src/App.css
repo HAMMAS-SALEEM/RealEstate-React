@@ -34,6 +34,7 @@
 
 .navbar-open {
   transform: translateX(0);
+  z-index: 1;
 }
 
 .navbar-close {
@@ -41,7 +42,6 @@
 }
 
 .estates-container {
-  background-color: bisque;
   padding: 15px;
   display: flex;
   flex-wrap: wrap;
@@ -49,10 +49,24 @@
   gap: 35px;
 }
 
+.featured-properties-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(50,50,50);
+  text-align: center;
+  margin: 50px 0 40px 0;
+}
+
 .estate-card {
   width: 300px;
   gap: 10px;
   position: relative;
+  border: 1px solid rgba(160,122,90, 0.3);
+}
+
+.estate-card:hover {
+  box-shadow: 0 0 1px black;
+  transition: all 0.2s ease-in-out;
 }
 
 .estate-image {
@@ -61,7 +75,7 @@
 }
 
 .estate-title {
-  font-size: 28px;
+  font-size: 24px;
   color: rgb(50,50,50);
   font-weight: 700;
   margin-left: 12px;
@@ -159,90 +173,6 @@
   padding: 0 0 25px 0;
   margin: 10px;
   background-color: white;
-}
-
-.quantity-controller {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-
-.quantity-screen {
-  width: 60px;
-  text-align: center;
-}
-
-.quantity-increaser,
-.quantity-decreaser {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background-color: #fb9ec4;
-  font-size: 24px;
-  font-weight: 500;
-}
-
-.cart-overall {
-  padding: 10px;
-}
-
-.cart-table {
-  background-color: bisque;
-  border-collapse: collapse;
-}
-
-.cart-container {
-  background-color: white;
-}
-
-td {
-    padding: 30px 0;
-}
-
-.cart-table,
-.cart-container,
-.cart-container tr {
-  width: 100%;
-}
-
-.cart-table-head {
-  line-height: 60px;
-}
-
-.cart-img {
-  width: 75px;
-  height: 75px;
-}
-
-.cart-name-image-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.cart-name {
-  font-size: 12px;
-  width: 75px;
-}
-
-.checkout-link {
-  text-decoration: none;
-  background-color: #fb9ec4;
-  padding: 10px;
-  color: black;
-  font-size: 15px;
-  font-weight: 700;
-  float: right;
-  margin: 20px;
-}
-
-.cart-name-image-container,
-.cart-price,
-.cart-qty,
-.remove-item-btn-cart {
-  text-align: center;
 }
 
 .hidden {
