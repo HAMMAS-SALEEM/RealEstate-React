@@ -23,7 +23,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
       const fCountry = locationData.countries.find(c => c.name === data.address.country)
       if (fCountry) {
         const states = State.getStatesOfCountry(fCountry.isoCode)
-        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states }))
+        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states, cities: [] }))
       }
     }
   }, [data.address.country, locationData.countries])
