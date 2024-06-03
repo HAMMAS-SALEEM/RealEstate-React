@@ -14,8 +14,8 @@ const CreatePost = () => {
     propertySize: '',
     address: {
       street: '',
-      city: '',
-      state: '',
+      city: 'Faisalabad',
+      state: 'Punjab',
       country: 'Pakistan',
     },
     image: '',

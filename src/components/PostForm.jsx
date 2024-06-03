@@ -2,44 +2,42 @@ import React, { useEffect, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
 
 const PostForm = ({ handleChange, handleSubmit, data }) => {
-  const [countries, setCountries] = useState([])
-  const [singleCountry, setSingleCountry] = useState()
-  const [state, setState] = useState()
-  const [singleState, setSingleState] = useState()
-  const [stateData, setStateData] = useState()
-  const [cities, setCities] = useState()
-  const [cityData, setCitiesData] = useState()
-
-  const getStatesOfCountry = country => {
-    const country = State.getStatesOfCountry(countries.find(c => c.name === country)?.isoCode)
-    setSingleCountry(country)
-  }
-
-  const getCitiesofState = state => {
-    const state = City.getCitiesOfState(singleCountry?.isoCode, stateData.find(s => s.name === state)?.isoCode)
-    setSingleState(state)
-  }
-
-  const handleCountries = async () => {
-    let countryData = Country.getAllCountries()
-    setCountries(countryData)
-  }
+  const [locationData, setLocationData] = useState({
+    countries: [],
+    states: [],
+    cities: [],
+    singleCountry: {},
+    singleState: {},
+  })
 
   useEffect(() => {
-    handleCountries()
+    const loadCountries = async () => {
+      const countryData = Country.getAllCountries()
+      setLocationData(prev => ({ ...prev, countries: countryData }))
+    }
+    loadCountries()
   }, [])
 
   useEffect(() => {
-    setStateData()
-  }, [data.address.country])
+    if (data.address.country) {
+      const fCountry = locationData.countries.find(c => c.name === data.address.country)
+      if (fCountry) {
+        const states = State.getStatesOfCountry(fCountry.isoCode)
+        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states }))
+      }
+    }
+  }, [data.address.country, locationData.countries])
 
   useEffect(() => {
-    console.log('State Changed')
-  }, [data.address.state])
+    if (data.address.state && locationData.singleCountry.isoCode) {
+      const fState = locationData.states.find(s => s.name === data.address.state)
+      if (fState) {
+        const cities = City.getCitiesOfState(locationData.singleCountry.isoCode, fState.isoCode)
+        setLocationData(prev => ({ ...prev, singleState: fState, cities }))
+      }
+    }
+  }, [data.address.state, locationData.states, locationData.singleCountry])
 
-  useEffect(() => {
-    console.log('City Changed')
-  }, [data.address.city])
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
       <label>Name:</label>
@@ -90,25 +88,20 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.address.street}
       />
       <label>City:</label>
-      <input
+      <select
         required
         className='border py-1 indent-3'
         onChange={handleChange}
-        type='text'
-        placeholder='City'
         name='city'
         value={data.address.city}
-      />
+      >
+        {locationData.cities.map(city => (
+          <option key={city.name} value={city.name}>
+            {city.name}
+          </option>
+        ))}
+      </select>
       <label>State:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='State'
-        name='state'
-        value={data.address.state}
-      />
       <select
         required
         className='border py-1 indent-3'
@@ -116,22 +109,13 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='state'
         value={data.address.state}
       >
-        {countries.map(country => (
-          <option key={country.name} value={country.name}>
-            {country.name}
+        {locationData.states.map(state => (
+          <option key={state.name} value={state.name}>
+            {state.name}
           </option>
         ))}
       </select>
       <label>Country:</label>
-      {/* <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Country'
-        name='country'
-        value={data.address.country}
-      /> */}
       <select
         required
         className='border py-1 indent-3'
@@ -139,7 +123,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='country'
         value={data.address.country}
       >
-        {countries.map(country => (
+        {locationData.countries.map(country => (
           <option key={country.name} value={country.name}>
             {country.name}
           </option>
