@@ -3,6 +3,8 @@ import PostForm from '../components/PostForm'
 import { postEstateAPI } from '../services/estates-service'
 import { createEstate } from '../redux/estates/estates'
 import { useDispatch } from 'react-redux'
+import SuccessMessage from '../components/SuccessMessage'
+import ErrorMessage from '../components/ErrorMessage'
 
 const CreatePost = () => {
   const [data, setData] = useState({
@@ -26,7 +28,7 @@ const CreatePost = () => {
   })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [errors, setErrors] = useState(false)
+  const [error, setErrors] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -60,17 +62,13 @@ const CreatePost = () => {
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Create Post
       </h1>
-      <PostForm handleChange={handleChange} handleSubmit={handleSubmit} data={data} />
-      {success && (
-        <div className='text-center text-green-500 text-2xl font-bold'>
-          Post Created Successfully
-        </div>
-      )}
-      {errors && (
-        <div className='text-center text-red-500 text-2xl font-bold'>
-          Something went wrong
-        </div>
-      )}
+      <PostForm
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        data={data}
+      />
+      <SuccessMessage text={"Post Created Successfully"} success={success} />
+      <ErrorMessage text={"Try Again"} error={error} />
     </div>
   )
 }

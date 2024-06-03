@@ -3,19 +3,24 @@ import { getApiEstates } from '../services/estates-service'
 import { addEstates } from '../redux/estates/estates'
 import { useDispatch, useSelector } from 'react-redux'
 import SingleEstate from './SingleEstate'
+// import Loader from './Loader'
 
 const EstateList = () => {
   const dispatch = useDispatch()
   const realEstates = useSelector(store => store.estates)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
   const handleGetEstates = () => {
+    setLoading(true)
     getApiEstates()
     .then(estates => {
       dispatch(addEstates(estates.data.estates))
+      setLoading(false)
       setError(false);
     })
     .catch((error) => {
+      setLoading(false)
       setError(true);
       return error;
     })
@@ -28,6 +33,7 @@ const EstateList = () => {
     <>
       <h2 className='featured-properties-section-title text-heading-color'>FEATURED PROPERTIES</h2>
       <div className='estates-container'>
+        {/* {<Loader />} */}
         {realEstates.estates &&
           realEstates.estates.map(estate => (
             <SingleEstate
