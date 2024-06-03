@@ -40,7 +40,6 @@ export const postEstateAPI = async data => {
 
 export const deleteEstateAPI = async id => {
   const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
-  console.log(accessToken)
   try {
     const res = await axios.delete(`${API_URL}/api/estate`, {
       data: { id },

@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { deleteEstateAPI } from '../services/estates-service'
 import { removeEstate } from '../redux/estates/estates'
-import UpdatePopup from '../components/UpdatePopup'
+import ErrorMessage from '../components/ErrorMessage'
+import SuccessMessage from '../components/SuccessMessage'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
@@ -15,19 +16,23 @@ const ViewListing = () => {
   const [visiblePopup, setVisiblePopup] = useState(false)
   const [info, setInfo] = useState({})
 
+  const handleError = () => setError((prev) => !prev)
+  const handleSuccess = () => setSuccess((prev) =>!prev)
+
   const reduxEstates = useSelector(store => store.estates)
   const dispatch = useDispatch()
 
   const handleUpdate = e => {
     const { id } = e.target
     let targetObject = { ...reduxEstates.estates.find(est => est._id === id) }
-    setInfo({id, ...targetObject})
+    setInfo({ id, ...targetObject })
     setVisiblePopup(true)
   }
+
   const handleDelete = async e => {
     const { id } = e.target
     const res = await deleteEstateAPI(id)
-    console.log(res)
+
     if (res.status === 200) {
       dispatch(removeEstate(id))
       setSuccess(true)
@@ -49,16 +54,6 @@ const ViewListing = () => {
       <h2 className='text-center m-5 text-4xl font-bold text-heading-color underline-offset-1'>
         My Properties
       </h2>
-      {success && (
-        <div className='text-center text-green-500 text-2xl font-bold'>
-          Post Deleted Successfully
-        </div>
-      )}
-      {error && (
-        <div className='text-center text-red-500 text-2xl font-bold'>
-          Something went wrong
-        </div>
-      )}
       <ul className='flex flex-wrap justify-center items-center'>
         {estates.estates &&
           estates.estates
@@ -110,6 +105,10 @@ const ViewListing = () => {
           </div>
         </div>
       )}
+      <div className="sticky bottom-0">
+        <ErrorMessage text={"Try Again"} error={error} handleMessage={handleError} />
+        <SuccessMessage text={"Post Deleted Successfully"} success={success} handleMessage={handleSuccess} />
+      </div>
     </div>
   )
 }

@@ -3,11 +3,14 @@ import PostForm from './PostForm'
 import { updateEstateAPI } from '../services/estates-service'
 import { updateEstate } from '../redux/estates/estates'
 import { useDispatch } from 'react-redux'
+import SuccessMessage from './SuccessMessage'
+import ErrorMessage from './ErrorMessage'
 
 const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
   const [data, setData] = useState(info)
   const [success, setSuccess] = useState(false)
-  const [error, setErrors] = useState(false)
+  const [error, setError] = useState(false)
+  const [message, setMessage] = useState("")
 
   const dispatch = useDispatch();
 
@@ -38,7 +41,8 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
       setSuccess(true)
       handleVisibilityPopup();
     } else {
-      setErrors(true)
+      setError(true)
+      setMessage(res.message)
     }
   }
 
@@ -55,16 +59,8 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
           data={data}
         />
       }
-      {success && (
-        <div className='text-center text-green-500 text-2xl font-bold'>
-          Post Created Successfully
-        </div>
-      )}
-      {error && (
-        <div className='text-center text-red-500 text-2xl font-bold'>
-          Something went wrong
-        </div>
-      )}
+      <ErrorMessage error={error} text={message} />
+      <SuccessMessage success={success} text={message} />
     </div>
   )
 }

@@ -3,7 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/tw-elements-react/dist/js/**/*.js"
+    "./node_modules/tw-elements-react/dist/js/**/*.js",
   ],
   theme: {
     screens: {
@@ -26,6 +26,7 @@ export default {
       },
   },
   darkMode: "class",
-  plugins: [require("tw-elements-react/dist/plugin.cjs")]
+  plugins: [require("tw-elements-react/dist/plugin.cjs")
+  ]
   }
 
