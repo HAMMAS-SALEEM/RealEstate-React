@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
 import { handleAuth } from './redux/auth/auth'
 import { useDispatch, useSelector } from 'react-redux'
@@ -22,11 +22,13 @@ const App = () => {
 
   const user = useSelector(store => store.auth)
   const token = cookieGetter();
+  
+  const location = useLocation()
 
   useEffect(() => {
     if (token && !user.signedIn) {
       dispatch(handleAuth())
-      navigate('/')
+      navigate(location.pathname)
     }
   }, [token, user.signedIn, dispatch, navigate])
 
@@ -34,8 +36,8 @@ const App = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route element={<ProtectedRoute user={user.signedIn} />}>
-          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/product/:id' element={<Detail />} />
           <Route path='/create_post' element={<CreatePost />} />
           <Route path='/view_listing' element={<ViewListing />} />
