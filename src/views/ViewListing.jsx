@@ -21,10 +21,7 @@ const ViewListing = () => {
   const handleUpdate = e => {
     const { id } = e.target
     let targetObject = { ...reduxEstates.estates.find(est => est._id === id) }
-    delete targetObject.user_id
-    delete targetObject._id
-    delete targetObject._v
-    setInfo(targetObject)
+    setInfo({id, ...targetObject})
     setVisiblePopup(true)
   }
   const handleDelete = async e => {
@@ -42,7 +39,7 @@ const ViewListing = () => {
   }
 
   return (
-    <div className={visiblePopup && 'overflow-hidden'}>
+    <div>
       <NavLink
         to={'/dashboard'}
         className='absolute left-2 top-3 bg-black text-white font-bold px-1 py-0.5 rounded'

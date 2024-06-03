@@ -21,9 +21,11 @@ export const estatesSlice = createSlice({
       state.estates = state.estates.filter(estate => estate._id !== action.payload);
     },
     updateEstate: (state, action) => {
+      const updatedEstate = { ...action.payload };
+      delete updatedEstate.id;
       state.estates = state.estates.map(estate =>
-        estate._id === action.payload._id? action.payload : estate
-      )
+        estate._id === updatedEstate._id ? updatedEstate : estate
+      );
     },
     getEstates: (state) => {
       return state.estates

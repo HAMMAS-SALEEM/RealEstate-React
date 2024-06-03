@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import PostForm from './PostForm'
 import { updateEstateAPI } from '../services/estates-service'
 import { updateEstate } from '../redux/estates/estates'
+import { useDispatch } from 'react-redux'
 
 const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
   const [data, setData] = useState(info)
   const [success, setSuccess] = useState(false)
   const [error, setErrors] = useState(false)
+
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -22,14 +25,18 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
     }
   }
 
+  const handleVisibilityPopup = () => {
+    setVisiblePopup(false)
+    setInfo({})
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
     const res = await updateEstateAPI(data)
     if (res.status === 200) {
-      dispatch(updateEstate(res.data.estate))
+      dispatch(updateEstate(data))
       setSuccess(true)
-      setVisiblePopup(false)
-      setInfo({})
+      handleVisibilityPopup();
     } else {
       setErrors(true)
     }
@@ -37,7 +44,7 @@ const UpdatePopup = ({info, setVisiblePopup, setInfo}) => {
 
   return (
     <div className='p-4'>
-      <button type='="button' onClick={() => setVisiblePopup(false)} className="font-bold text-xl text-white">X</button>
+      <button type='="button' onClick={handleVisibilityPopup} className="font-bold text-xl text-white">X</button>
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Update Post
       </h1>

@@ -57,8 +57,7 @@ export const deleteEstateAPI = async id => {
 export const updateEstateAPI = async data => {
   const accessToken = JSON.parse(localStorage.getItem('user')).accessToken
   try {
-    const res = await axios.put(`${API_URL}/api/estate/update`, {
-      data,
+    const res = await axios.put(`${API_URL}/api/estate`, {...data}, {
       headers: {
         'x-access-token': accessToken
       }

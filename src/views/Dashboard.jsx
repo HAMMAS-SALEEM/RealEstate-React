@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom'
 
 const Dashboard = () => {
   const username = JSON.parse(localStorage.getItem('user'))
-  console.log(username.username)
   return (
     <div>
       <h2 className='text-center text-3xl font-bold mt-20'>
