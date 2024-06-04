@@ -6,6 +6,7 @@ import { setSearch } from '../redux/search/search'
 import SingleEstate from '../components/SingleEstate'
 import Loader from '../components/Loader'
 import { filterObjectByKey } from '../utils/objectHandler'
+import { URLGenerator } from '../utils/URLGenerator'
 
 const Search = () => {
   const [loading, setLoading] = useState(false)
@@ -19,13 +20,9 @@ const Search = () => {
     const { name, value } = e.target
     if (value && value !== 'All') {
       setSearchParams({...searchParams, [name]: value})
-      console.log(searchParams)
       return value
     }
-
-    console.log(searchParams)
     const filteredSearch = filterObjectByKey(name, searchParams)
-    console.log(filteredSearch)
     setSearchParams(filteredSearch)
   }
 
@@ -33,20 +30,17 @@ const Search = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log(searchParams)
-    // const { value } = e.target[0]
-    // if (value) {
-    //   setNoDataMessage(false)
-    //   setInitialMessage(false)
-    //   setLoading(true)
-    //   const res = await searchEstateAPI(value)
-    //   setLoading(false)
-    //   if (res.status === 201) {
-    //     setNoDataMessage(true)
-    //   }
-    //   dispatch(setSearch(res.data.searched))
-    // }
-    return value
+    const finalURL = URLGenerator(searchParams)
+      setNoDataMessage(false)
+      setInitialMessage(false)
+      setLoading(true)
+      const res = await searchEstateAPI(finalURL)
+      setLoading(false)
+      if (res.status === 201) {
+        setNoDataMessage(true)
+      }
+      dispatch(setSearch(res.data.searched))
+    return finalURL;
   }
   return (
     <>
@@ -57,7 +51,9 @@ const Search = () => {
         <input
           type='text'
           placeholder='Keyword'
+          name="t"
           className='border p-3 font-bold outline-none'
+          onChange={handleSearchParams}
           required
         />
         <select
@@ -66,8 +62,8 @@ const Search = () => {
           className='border p-3 font-bold outline-none'
         >
           <option>All</option>
-          <option>Rent</option>
-          <option>Sale</option>
+          <option value="For Rent">Rent</option>
+          <option value="For Sale">Sale</option>
         </select>
         <input
           type='number'

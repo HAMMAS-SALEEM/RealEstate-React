@@ -67,9 +67,9 @@ export const updateEstateAPI = async data => {
   }
 }
 
-export const searchEstateAPI = async txt => {
+export const searchEstateAPI = async url => {
   try {
-    const res = await axios.get(`${API_URL}/search/?t=${txt}`)
+    const res = await axios.get(url)
     return res
   } catch (error) {
     return error
