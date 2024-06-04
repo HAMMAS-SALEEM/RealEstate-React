@@ -12,6 +12,7 @@ const Detail = lazy(() => import('./views/Detail'))
 const Dashboard = lazy(() => import('./views/Dashboard'))
 const CreatePost = lazy(() => import('./views/CreatePost'))
 const ViewListing = lazy(() => import('./views/ViewListing'))
+const Search = lazy(() => import('./views/Search'))
 const Login = lazy(() => import('./views/Login'))
 const Register = lazy(() => import('./views/Register'))
 const NotFound = lazy(() => import('./views/NotFound'))
@@ -41,6 +42,7 @@ const App = () => {
           <Route path='/product/:id' element={<Detail />} />
           <Route path='/create_post' element={<CreatePost />} />
           <Route path='/view_listing' element={<ViewListing />} />
+          <Route path='/search' element={<Search />} />
         </Route>
         <Route element={<PublicRoute user={user.signedIn} />}>
           <Route path='/login' element={<Login />} />
