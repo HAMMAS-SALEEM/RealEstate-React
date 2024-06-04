@@ -9,6 +9,7 @@ import ErrorMessage from '../components/ErrorMessage'
 import SuccessMessage from '../components/SuccessMessage'
 import SuccessPopup from '../components/SuccessPopup'
 import Loader from '../components/Loader'
+import AppLayout from '../layout/AppLayout'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
@@ -53,12 +54,12 @@ const ViewListing = () => {
 
   return (
     <div>
-      <NavLink
+      {/* <NavLink
         to={'/dashboard'}
         className='absolute left-2 top-3 bg-black text-white font-bold px-1 py-0.5 rounded'
       >
         Back
-      </NavLink>
+      </NavLink> */}
       <h2 className='text-center m-5 text-4xl font-bold text-heading-color underline-offset-1'>
         My Properties
       </h2>
@@ -142,4 +143,4 @@ const ViewListing = () => {
   )
 }
 
-export default ViewListing
+export default AppLayout()(ViewListing)

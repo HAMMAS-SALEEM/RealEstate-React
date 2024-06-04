@@ -1,11 +1,14 @@
 import API_URL from '../config/app.config/index'
 import axios from "axios"
+import { setCookie } from '../utils/cookieHandler'
 
 export const authMethods = {
-  signup: async (email, password) => {
+  signup: async (username, email, password) => {
     try {
       const user = await axios.post(`${API_URL}/signup`, {username, email, password})
-      localStorage.setItem('user', JSON.stringify(user.data))
+      const {accessToken, expiresIn} = user.data.user
+      localStorage.setItem('user', JSON.stringify(user.data.user))
+      setCookie('accessToken', accessToken, expiresIn)
       return user
     } catch (error) {
       return error
@@ -14,7 +17,9 @@ export const authMethods = {
   signin: async (email, password) => {
     try {
       const user = await axios.post(`${API_URL}/login`, {email, password})
+      const {accessToken, expiresIn} = user.data
       localStorage.setItem('user', JSON.stringify(user.data))
+      setCookie('accessToken', accessToken, expiresIn)
       return user
     } catch (error) {
       return error

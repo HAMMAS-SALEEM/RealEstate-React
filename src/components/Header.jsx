@@ -11,7 +11,7 @@ const Header = () => {
       <div className="navbar-sub-section">
         <BurgerIcon handleNavbar={handleNavbar} />
       </div>
-      <Navbar navbar={navbar} />
+      <Navbar navbar={navbar} handleNavbar={handleNavbar} />
     </div>
   )
 }

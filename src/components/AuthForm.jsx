@@ -3,36 +3,30 @@ import { TEInput, TERipple } from 'tw-elements-react'
 
 const AuthForm = ({
   handleAuth,
-  setEmail,
-  setPassword,
+  setFieldValue,
   title,
   desc,
-  error
+  error,
+  fields
 }) => {
   return (
     <div>
       <div className='pt-20'>
-        <h1 className="text-center text-5xl mb-12 font-bold">{title}</h1>
+        <h1 className='text-center text-5xl mb-12 font-bold'>{title}</h1>
         <form onSubmit={handleAuth}>
           <p className='mb-4 text-center'>{desc}</p>
-          <TEInput
-            type='text'
-            label='Username'
-            className='mb-4'
-            onChange={e => setEmail(e.target.value)}
-            required
-          ></TEInput>
-
-          <TEInput
-            type='password'
-            label='Password'
-            className='mb-4'
-            onChange={e => setPassword(e.target.value)}
-            required
-          ></TEInput>
-
+          {fields.map(field => (
+            <TEInput
+              key={field.name}
+              type={field.type}
+              label={field.label}
+              className='mb-4'
+              onChange={e => setFieldValue(field.name, e.target.value)}
+              required={field.required}
+              value={field.value}
+            ></TEInput>
+          ))}
           {error && <p className='text-red-500 text-center'>{error}</p>}
-
           <div className='mb-12 pb-1 pt-1 text-center'>
             <TERipple rippleColor='light' className='w-full'>
               <button

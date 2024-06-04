@@ -1,10 +1,11 @@
 import React, { Suspense, lazy, useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
 import { handleAuth } from './redux/auth/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import PublicRoute from './routes/PublicRoutes'
 import ProtectedRoute from './routes/ProtectedRoutes'
+import { cookieGetter } from './utils/cookieHandler'
 
 const Home = lazy(() => import('./views/Home'))
 const Detail = lazy(() => import('./views/Detail'))
@@ -20,12 +21,14 @@ const App = () => {
   const navigate = useNavigate()
 
   const user = useSelector(store => store.auth)
-  const token = JSON.parse(localStorage.getItem('user'))
+  const token = cookieGetter();
+  
+  const location = useLocation()
 
   useEffect(() => {
     if (token && !user.signedIn) {
       dispatch(handleAuth())
-      navigate('/')
+      navigate(location.pathname)
     }
   }, [token, user.signedIn, dispatch, navigate])
 
@@ -33,8 +36,8 @@ const App = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route element={<ProtectedRoute user={user.signedIn} />}>
-          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/' element={<Home />} />
+          <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/product/:id' element={<Detail />} />
           <Route path='/create_post' element={<CreatePost />} />
           <Route path='/view_listing' element={<ViewListing />} />

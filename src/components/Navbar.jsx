@@ -1,15 +1,15 @@
 import React from 'react'
-import { authMethods } from '../services/auth-service'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { handleAuth } from '../redux/auth/auth'
+import { deleteCookie } from '../utils/cookieHandler'
 
-const Navbar = ({ navbar }) => {
+const Navbar = ({ navbar, handleNavbar }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleSignOut = () => {
-    authMethods.signOut()
+    deleteCookie("accessToken");
     dispatch(handleAuth())
     navigate('/login')
   }
@@ -20,13 +20,12 @@ const Navbar = ({ navbar }) => {
         navbar ? 'navbar-btns navbar-open' : 'navbar-btns navbar-close'
       }
     >
-      <button type='button'>Home</button>
-      <button type='button'>Store</button>
-      <button type='button'>Contact</button>
-      <NavLink to={"/dashboard"}>MyEstates</NavLink>
-      <button type='button' onClick={handleSignOut}>
+      <NavLink className="bg-heading-color text-white font-bold text-center"  to={"/"} >Home</NavLink>
+      <NavLink className="bg-heading-color text-white font-bold text-center"  to={"/dashboard"}>Dashboard</NavLink>
+      <button  className="bg-heading-color text-white font-bold" type='button' onClick={handleSignOut}>
         Sign Out
       </button>
+      <button type="button" onClick={handleNavbar} className="bg-black text-white w-8 h-8 rounded font-bold navbar-close-btn">X</button>
     </div>
   )
 }

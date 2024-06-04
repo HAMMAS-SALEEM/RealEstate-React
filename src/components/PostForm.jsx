@@ -1,6 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Country, State, City } from 'country-state-city'
 
 const PostForm = ({ handleChange, handleSubmit, data }) => {
+  const [locationData, setLocationData] = useState({
+    countries: [],
+    states: [],
+    cities: [],
+    singleCountry: {},
+    singleState: {},
+  })
+
+  useEffect(() => {
+    const loadCountries = async () => {
+      const countryData = Country.getAllCountries()
+      setLocationData(prev => ({ ...prev, countries: countryData }))
+    }
+    loadCountries()
+  }, [])
+
+  useEffect(() => {
+    if (data.address.country) {
+      const fCountry = locationData.countries.find(c => c.name === data.address.country)
+      if (fCountry) {
+        const states = State.getStatesOfCountry(fCountry.isoCode)
+        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states, cities: [] }))
+      }
+    }
+  }, [data.address.country, locationData.countries])
+
+  useEffect(() => {
+    if (data.address.state && locationData.singleCountry.isoCode) {
+      const fState = locationData.states.find(s => s.name === data.address.state)
+      if (fState) {
+        const cities = City.getCitiesOfState(locationData.singleCountry.isoCode, fState.isoCode)
+        setLocationData(prev => ({ ...prev, singleState: fState, cities }))
+      }
+    }
+  }, [data.address.state, locationData.states, locationData.singleCountry])
+
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
       <label>Name:</label>
@@ -51,35 +88,47 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.address.street}
       />
       <label>City:</label>
-      <input
+      <select
         required
         className='border py-1 indent-3'
         onChange={handleChange}
-        type='text'
-        placeholder='City'
         name='city'
         value={data.address.city}
-      />
+      >
+        {locationData.cities.map(city => (
+          <option key={city.name} value={city.name}>
+            {city.name}
+          </option>
+        ))}
+      </select>
       <label>State:</label>
-      <input
+      <select
         required
         className='border py-1 indent-3'
         onChange={handleChange}
-        type='text'
-        placeholder='State'
         name='state'
         value={data.address.state}
-      />
+      >
+        {locationData.states.map(state => (
+          <option key={state.name} value={state.name}>
+            {state.name}
+          </option>
+        ))}
+      </select>
       <label>Country:</label>
-      <input
+      <select
         required
         className='border py-1 indent-3'
         onChange={handleChange}
-        type='text'
-        placeholder='Country'
         name='country'
         value={data.address.country}
-      />
+      >
+        {locationData.countries.map(country => (
+          <option key={country.name} value={country.name}>
+            {country.name}
+          </option>
+        ))}
+      </select>
       <label>Image URL:</label>
       <input
         required
@@ -165,6 +214,36 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
+      <label>Total Rooms:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Total Rooms'
+        value={data.rooms}
+        name='rooms'
+      />
+      <label>Floors:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Floors'
+        value={data.floors}
+        name='floors'
+      />
+      <label>Phone Number:</label>
+      <input
+        required
+        className='border py-1 indent-3'
+        onChange={handleChange}
+        type='text'
+        placeholder='Phone Number'
+        value={data.phoneNumber}
+        name='phoneNumber'
+      />
       <button className='w-100 bg-black text-white py-1 rounded' type='submit'>
         Submit
       </button>

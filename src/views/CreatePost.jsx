@@ -6,26 +6,30 @@ import { useDispatch } from 'react-redux'
 import SuccessMessage from '../components/SuccessMessage'
 import ErrorMessage from '../components/ErrorMessage'
 import Loader from '../components/Loader'
+import AppLayout from '../layout/AppLayout'
 
 const CreatePost = () => {
   const [data, setData] = useState({
-    name: '',
+    name: 'House',
     price: '',
     propertySize: '',
     address: {
       street: '',
-      city: '',
-      state: '',
-      country: ''
+      city: 'Faisalabad',
+      state: 'Punjab',
+      country: 'Pakistan',
     },
     image: '',
-    type: '',
+    type: 'For Sale',
     bedrooms: '',
     bathrooms: '',
     furnished: false,
     garage: false,
     swimmingPool: false,
-    balcony: false
+    balcony: false,
+    floors: "",
+    rooms: "",
+    phoneNumber: ""
   })
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -41,7 +45,7 @@ const CreatePost = () => {
 
     if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
       setData({ ...data, [name]: value === 'Yes' })
-    } else if (['bedrooms', 'bathrooms', 'price'].includes(name)) {
+    } else if (['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)) {
       setData({ ...data, [name]: Number(value) })
     } else if (['street', 'city', 'state', 'country'].includes(name)) {
       setData({ ...data, address: { ...data.address, [name]: value } })
@@ -53,6 +57,7 @@ const CreatePost = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
+    console.log(data);
     const res = await postEstateAPI(data)
     if (res.status === 200) {
       dispatch(createEstate(res.data.estate))
@@ -94,4 +99,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default AppLayout()(CreatePost)
