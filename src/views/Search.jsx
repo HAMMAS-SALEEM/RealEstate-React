@@ -1,48 +1,87 @@
 import React, { useState } from 'react'
-// import Filters from '../components/Filters'
 import AppLayout from '../layout/AppLayout'
 import { searchEstateAPI } from '../services/estates-service'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearch } from '../redux/search/search'
 import SingleEstate from '../components/SingleEstate'
 import Loader from '../components/Loader'
+import { filterObjectByKey } from '../utils/objectHandler'
 
 const Search = () => {
   const [loading, setLoading] = useState(false)
   const [initailMessage, setInitialMessage] = useState(true)
   const [noDataMessage, setNoDataMessage] = useState(false)
+  const [searchParams, setSearchParams] = useState({})
 
   const dispatch = useDispatch()
+
+  const handleSearchParams = e => {
+    const { name, value } = e.target
+    if (value && value !== 'All') {
+      setSearchParams({...searchParams, [name]: value})
+      console.log(searchParams)
+      return value
+    }
+
+    console.log(searchParams)
+    const filteredSearch = filterObjectByKey(name, searchParams)
+    console.log(filteredSearch)
+    setSearchParams(filteredSearch)
+  }
 
   const searched = useSelector(state => state.search.search)
 
   const handleSubmit = async e => {
     e.preventDefault()
-    const { value } = e.target[0]
-    if (value) {
-      setNoDataMessage(false)
-      setInitialMessage(false)
-      setLoading(true)
-      const res = await searchEstateAPI(value)
-      setLoading(false)
-      if (res.status === 201) {
-        setNoDataMessage(true)
-      }
-      dispatch(setSearch(res.data.searched))
-    }
+    console.log(searchParams)
+    // const { value } = e.target[0]
+    // if (value) {
+    //   setNoDataMessage(false)
+    //   setInitialMessage(false)
+    //   setLoading(true)
+    //   const res = await searchEstateAPI(value)
+    //   setLoading(false)
+    //   if (res.status === 201) {
+    //     setNoDataMessage(true)
+    //   }
+    //   dispatch(setSearch(res.data.searched))
+    // }
     return value
   }
   return (
     <>
       <form
         onSubmit={handleSubmit}
-        className='flex justify-center items-center p-5 gap-3'
+        className='flex flex-wrap justify-center items-center p-5 gap-3'
       >
-        {/* <Filters /> */}
         <input
           type='text'
           placeholder='Keyword'
           className='border p-3 font-bold outline-none'
+          required
+        />
+        <select
+          onChange={handleSearchParams}
+          name='type'
+          className='border p-3 font-bold outline-none'
+        >
+          <option>All</option>
+          <option>Rent</option>
+          <option>Sale</option>
+        </select>
+        <input
+          type='number'
+          placeholder='Min Price'
+          className='border p-3 font-bold outline-none'
+          name="priceMin"
+          onChange={handleSearchParams}
+        />
+        <input
+          type='number'
+          placeholder='Max Price'
+          className='border p-3 font-bold outline-none'
+          name="priceMax"
+          onChange={handleSearchParams}
         />
         <button
           type='submit'
