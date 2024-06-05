@@ -20,7 +20,7 @@ const Detail = () => {
           if (estate._id === id) {
             return (
               <div className='estate-detail-card' key={estate._id}>
-                <div className="estate-detail-image-container rounded-3xl overflow-hidden">
+                <div className='estate-detail-image-container rounded-3xl overflow-hidden'>
                   <img
                     src={estate.image}
                     alt={estate.image}
@@ -31,40 +31,45 @@ const Detail = () => {
                   <span className='text-green-500 font-bold text-lg'>
                     &#x2022; {estate.name} {estate.type}
                   </span>
-                  <span className='text-4xl font-bold text-[#141414]'>
+                  <span className='text-4xl font-bold text-royal-black'>
                     {formatNumberToCurrency(estate.price, 'Rs.')}
                   </span>
                   <div className='flex items-center gap-6'>
                     <div className='flex justify-center items-center gap-3'>
                       <img className='w-7' src={bedroom} alt={bedroom} />
-                      <span className='font-bold text-heading-color'>
+                      <span className='font-bold text-royal-black'>
                         {estate.bedrooms} Beds
                       </span>
                     </div>
                     <div className='flex justify-center items-center gap-3'>
                       <img className='w-7' src={bathtub} alt={bathtub} />
-                      <span className='font-bold text-heading-color'>
+                      <span className='font-bold text-royal-black'>
                         {estate.bathrooms} Baths
                       </span>
                     </div>
                     <div className='flex justify-center items-center gap-3'>
                       <img className='w-7' src={space} alt={space} />
-                      <span className='font-bold text-heading-color'>
+                      <span className='font-bold text-royal-black'>
                         {estate.propertySize}
                       </span>
                     </div>
                   </div>
-                  <span className='font-bold bg-heading-color text-white p-1 rounded'>
-                    {(estate.address.street
-                      ? `${estate.address.street}, `
-                      : '') +
-                      (estate.address.city ? `${estate.address.city}, ` : '') +
-                      (estate.address.state
-                        ? `${estate.address.state}, `
+                  <div className="flex justify-center items-center gap-3">
+                    <img src={location} alt={location} />
+                    <span className='font-bold text-royal-black p-1 rounded'>
+                      {(estate.address.street
+                        ? `${estate.address.street}, `
                         : '') +
-                      estate.address.country}
-                  </span>
-                  <span className='text-lg font-bold'>
+                        (estate.address.city
+                          ? `${estate.address.city}, `
+                          : '') +
+                        (estate.address.state
+                          ? `${estate.address.state}, `
+                          : '') +
+                        estate.address.country}
+                    </span>
+                  </div>
+                  <span className='text-lg font-bold text-royal-black'>
                     Phone: {estate.phoneNumber}
                   </span>
                 </div>
