@@ -70,6 +70,7 @@ const UpdatePopup = ({
           <PostForm
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            setData={setData}
             data={data}
           />
         }

@@ -72,9 +72,6 @@ const CreatePost = () => {
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Create Post
       </h1>
-      <button onClick={() => console.log(data)}>
-        GetState
-      </button>
       <PostForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
