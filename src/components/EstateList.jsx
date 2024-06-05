@@ -28,7 +28,9 @@ const EstateList = () => {
   }
 
   useEffect(() => {
-    handleGetEstates()
+    if(realEstates.estates.length === 0) {
+      handleGetEstates()
+    }
   }, [])
   return (
     <>
