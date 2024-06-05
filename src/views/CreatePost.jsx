@@ -15,9 +15,9 @@ const CreatePost = () => {
     propertySize: '',
     address: {
       street: '',
-      city: 'Faisalabad',
-      state: 'Punjab',
-      country: 'Pakistan',
+      city: '',
+      state: '',
+      country: '',
     },
     image: '',
     type: 'For Sale',
@@ -57,7 +57,6 @@ const CreatePost = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    console.log(data);
     const res = await postEstateAPI(data)
     if (res.status === 200) {
       dispatch(createEstate(res.data.estate))
@@ -73,9 +72,13 @@ const CreatePost = () => {
       <h1 className='text-center my-5 text-3xl font-bold text-heading-color'>
         Create Post
       </h1>
+      <button onClick={() => console.log(data)}>
+        GetState
+      </button>
       <PostForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        setData={setData}
         data={data}
       />
       <div className="fixed top-0 left-0 right-0">
