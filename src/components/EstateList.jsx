@@ -4,6 +4,7 @@ import { addEstates } from '../redux/estates/estates'
 import { useDispatch, useSelector } from 'react-redux'
 import SingleEstate from './SingleEstate'
 import Loader from './Loader'
+import { NavLink } from 'react-router-dom'
 
 const EstateList = () => {
   const dispatch = useDispatch()
@@ -42,18 +43,19 @@ const EstateList = () => {
       <div className='estates-container'>
         {realEstates.estates &&
           realEstates.estates.map(estate => (
-            <SingleEstate
-              key={estate._id}
-              id={estate._id}
-              name={estate.name}
-              propertySize={estate.propertySize}
-              price={estate.price}
-              image={estate.image}
-              bedrooms={estate.bedrooms}
-              bathrooms={estate.bathrooms}
-              address={estate.address}
-              type={estate.type}
-            />
+            <NavLink key={estate._id} to={`/estate/${estate._id}`}>
+              <SingleEstate
+                id={estate._id}
+                name={estate.name}
+                propertySize={estate.propertySize}
+                price={estate.price}
+                image={estate.image}
+                bedrooms={estate.bedrooms}
+                bathrooms={estate.bathrooms}
+                address={estate.address}
+                type={estate.type}
+              />
+            </NavLink>
           ))}
         {error && (
           <button

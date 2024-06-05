@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import { formatNumberToCurrency } from '../utils/formatNumberToCurrency'
 import location from '../assets/location.png'
 import bedroom from '../assets/bedroom.png'
@@ -36,9 +35,6 @@ const SingleEstate = ({
       </div>
       <span className='estate-price'>{formatPrice}</span>
       <span className='estate-type'>{type}</span>
-      <NavLink to={`/estate/${id}`} className='estate-link-to-details'>
-        See Details
-      </NavLink>
     </div>
   )
 }
