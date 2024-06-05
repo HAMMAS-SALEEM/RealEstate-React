@@ -50,7 +50,7 @@
 
 .navbar-open {
   transform: translateX(0);
-  z-index: 1;
+  z-index: 101;
 }
 
 .navbar-close {
@@ -198,7 +198,6 @@
 
   .estate-detail-sub-container {
     width: 300px;
-    /* background-color: black; */
     padding: 30px;
     margin: 0;
   }

@@ -29,7 +29,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   useEffect(() => {
     if (data.address.country) {
-      console.log("Set State")
       const fCountry = locationData.countries.find(
         c => c.name === data.address.country
       )
@@ -42,7 +41,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
             state: states.length > 0 ? states[0].name : 'NA'
           }
         }))
-        console.log("Set State")
         setLocationData(prev => ({
           ...prev,
           singleCountry: fCountry,
@@ -56,7 +54,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   useEffect(() => {
     if (data.address.state && locationData.singleCountry.isoCode) {
-      console.log('Set City')
       const fState = locationData.states.find(
         s => s.name === data.address.state
       )
@@ -72,7 +69,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
             city: cities.length > 0 ? cities[0].name : 'NA'
           }
         }))
-        console.log('Set City')
         setLocationData(prev => ({
           ...prev,
           singleState: fState,
