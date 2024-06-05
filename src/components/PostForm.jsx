@@ -24,8 +24,9 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       const fCountry = locationData.countries.find(c => c.name === data.address.country)
       if (fCountry) {
         const states = State.getStatesOfCountry(fCountry.isoCode)
-        setData((prev) => ({...prev, address: {...prev.address, state: (states[0].name || 'NA')}}))
-        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states, cities: [] }))
+        console.log(states)
+        setData((prev) => ({...prev, address: {...prev.address, state: (states.length > 0 ? states[0].name : 'NA')}}))
+        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states: (states ? states : []), cities: [] }))
       }
     }
   }, [data.address.country, locationData.countries])
@@ -33,14 +34,15 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
   useEffect(() => {
     if (data.address.state && locationData.singleCountry.isoCode) {
       const fState = locationData.states.find(s => s.name === data.address.state)
+      console.log(fState)
       if (fState) {
         const cities = City.getCitiesOfState(locationData.singleCountry.isoCode, fState.isoCode)
-        setData((prev) => ({...prev, address: {...prev.address, city: (cities[0].name || 'NA')}}))
-        setLocationData(prev => ({ ...prev, singleState: fState, cities }))
-        console.log(data)
+        setData((prev) => ({...prev, address: {...prev.address, city: (cities.length > 0 ? cities[0].name : 'NA')}}))
+        setLocationData(prev => ({ ...prev, singleState: fState, cities: (cities ? cities : []) }))
+      } else {
+        setData((prev) => ({...prev, address: {...prev.address, city: 'NA'}}))
       }
     }
-    console.log("address changed", data.address.country, data.address.state, data.address.city)
   }, [data.address.state, locationData.states, locationData.singleCountry])
 
   return (
