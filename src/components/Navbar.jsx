@@ -9,7 +9,7 @@ const Navbar = ({ navbar, handleNavbar }) => {
   const dispatch = useDispatch()
 
   const handleSignOut = () => {
-    deleteCookie("accessToken");
+    deleteCookie('accessToken')
     dispatch(handleAuth())
     navigate('/login')
   }
@@ -20,12 +20,32 @@ const Navbar = ({ navbar, handleNavbar }) => {
         navbar ? 'navbar-btns navbar-open' : 'navbar-btns navbar-close'
       }
     >
-      <NavLink className="bg-heading-color text-white font-bold text-center"  to={"/"} >Home</NavLink>
-      <NavLink className="bg-heading-color text-white font-bold text-center"  to={"/dashboard"}>Dashboard</NavLink>
-      <button  className="bg-heading-color text-white font-bold" type='button' onClick={handleSignOut}>
+      <NavLink
+        className='bg-heading-color text-white font-bold text-center'
+        to={'/'}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        className='bg-heading-color text-white font-bold text-center'
+        to={'/dashboard'}
+      >
+        Dashboard
+      </NavLink>
+      <button
+        className='bg-heading-color text-white font-bold'
+        type='button'
+        onClick={handleSignOut}
+      >
         Sign Out
       </button>
-      <button type="button" onClick={handleNavbar} className="bg-black text-white w-8 h-8 rounded font-bold navbar-close-btn">X</button>
+      <button
+        type='button'
+        onClick={handleNavbar}
+        className='bg-black text-white w-8 h-8 rounded font-bold navbar-close-btn'
+      >
+        X
+      </button>
     </div>
   )
 }

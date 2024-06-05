@@ -1,46 +1,92 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
 
-const PostForm = ({ handleChange, handleSubmit, data }) => {
+const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
   const [locationData, setLocationData] = useState({
     countries: [],
     states: [],
     cities: [],
     singleCountry: {},
-    singleState: {},
+    singleState: {}
   })
+
+  let intervalRef = useRef(1)
 
   useEffect(() => {
     const loadCountries = async () => {
       const countryData = Country.getAllCountries()
+      // if (intervalRef.current === 0 && data.address.country.length > 0) {
+        setData(prev => ({
+          ...prev,
+          address: { ...prev.address, country: countryData[0].name }
+        }))
+      // }
       setLocationData(prev => ({ ...prev, countries: countryData }))
     }
+    intervalRef.current = intervalRef.current + 1
     loadCountries()
   }, [])
 
   useEffect(() => {
     if (data.address.country) {
-      const fCountry = locationData.countries.find(c => c.name === data.address.country)
+      console.log("Set State")
+      const fCountry = locationData.countries.find(
+        c => c.name === data.address.country
+      )
       if (fCountry) {
         const states = State.getStatesOfCountry(fCountry.isoCode)
-        setLocationData(prev => ({ ...prev, singleCountry: fCountry, states, cities: [] }))
+        setData(prev => ({
+          ...prev,
+          address: {
+            ...prev.address,
+            state: states.length > 0 ? states[0].name : 'NA'
+          }
+        }))
+        console.log("Set State")
+        setLocationData(prev => ({
+          ...prev,
+          singleCountry: fCountry,
+          states: states ? states : [],
+          cities: []
+        }))
+        
       }
     }
-  }, [data.address.country, locationData.countries])
+  }, [data.address.country])
 
   useEffect(() => {
     if (data.address.state && locationData.singleCountry.isoCode) {
-      const fState = locationData.states.find(s => s.name === data.address.state)
+      console.log('Set City')
+      const fState = locationData.states.find(
+        s => s.name === data.address.state
+      )
       if (fState) {
-        const cities = City.getCitiesOfState(locationData.singleCountry.isoCode, fState.isoCode)
-        setLocationData(prev => ({ ...prev, singleState: fState, cities }))
+        const cities = City.getCitiesOfState(
+          locationData.singleCountry.isoCode,
+          fState.isoCode
+        )
+        setData(prev => ({
+          ...prev,
+          address: {
+            ...prev.address,
+            city: cities.length > 0 ? cities[0].name : 'NA'
+          }
+        }))
+        console.log('Set City')
+        setLocationData(prev => ({
+          ...prev,
+          singleState: fState,
+          cities: cities ? cities : []
+        }))
+      } else {
+        setData(prev => ({ ...prev, address: { ...prev.address, city: 'NA' } }))
       }
     }
   }, [data.address.state, locationData.states, locationData.singleCountry])
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-      <label>Name:</label>
+      <label className='text-heading-color font-bold'>Name:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -57,7 +103,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Building'>Building</option>
         <option value='Plot'>Plot</option>
       </select>
-      <label>Price:</label>
+      <label className='text-heading-color font-bold'>Price:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -67,7 +113,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.price}
         name='price'
       />
-      <label>Property Area:</label>
+      <label className='text-heading-color font-bold'>Property Area:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -77,7 +123,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.propertySize}
         name='propertySize'
       />
-      <label>Street:</label>
+      <label className='text-heading-color font-bold'>Street:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -87,7 +133,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='street'
         value={data.address.street}
       />
-      <label>City:</label>
+      <label className='text-heading-color font-bold'>City:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -95,13 +141,15 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='city'
         value={data.address.city}
       >
+
+        {locationData.cities && <option value='NA'>NA</option>}
         {locationData.cities.map(city => (
           <option key={city.name} value={city.name}>
             {city.name}
           </option>
         ))}
       </select>
-      <label>State:</label>
+      <label className='text-heading-color font-bold'>State:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -109,13 +157,14 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='state'
         value={data.address.state}
       >
+        {locationData.states && <option value='NA'>NA</option>}
         {locationData.states.map(state => (
           <option key={state.name} value={state.name}>
             {state.name}
           </option>
         ))}
       </select>
-      <label>Country:</label>
+      <label className='text-heading-color font-bold'>Country:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -129,7 +178,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
           </option>
         ))}
       </select>
-      <label>Image URL:</label>
+      <label className='text-heading-color font-bold'>Image URL:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -139,7 +188,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='image'
         value={data.image}
       />
-      <label>Type:</label>
+      <label className='text-heading-color font-bold'>Type:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -150,7 +199,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='For Sale'>For Sale</option>
         <option value='For Rent'>For Rent</option>
       </select>
-      <label>Bedrooms:</label>
+      <label className='text-heading-color font-bold'>Bedrooms:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -160,7 +209,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='bedrooms'
         value={data.bedrooms}
       />
-      <label>Bathrooms:</label>
+      <label className='text-heading-color font-bold'>Bathrooms:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -170,7 +219,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         name='bathrooms'
         value={data.bathrooms}
       />
-      <label>Furnished:</label>
+      <label className='text-heading-color font-bold'>Furnished:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -181,7 +230,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
-      <label>Garage:</label>
+      <label className='text-heading-color font-bold'>Garage:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -192,7 +241,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
-      <label>Swimming Pool:</label>
+      <label className='text-heading-color font-bold'>Swimming Pool:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -203,7 +252,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
-      <label>Balcony:</label>
+      <label className='text-heading-color font-bold'>Balcony:</label>
       <select
         required
         className='border py-1 indent-3'
@@ -214,7 +263,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         <option value='Yes'>Yes</option>
         <option value='No'>No</option>
       </select>
-      <label>Total Rooms:</label>
+      <label className='text-heading-color font-bold'>Total Rooms:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -224,7 +273,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.rooms}
         name='rooms'
       />
-      <label>Floors:</label>
+      <label className='text-heading-color font-bold'>Floors:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -234,7 +283,7 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.floors}
         name='floors'
       />
-      <label>Phone Number:</label>
+      <label className='text-heading-color font-bold'>Phone Number:</label>
       <input
         required
         className='border py-1 indent-3'
@@ -244,7 +293,10 @@ const PostForm = ({ handleChange, handleSubmit, data }) => {
         value={data.phoneNumber}
         name='phoneNumber'
       />
-      <button className='w-100 bg-black text-white py-1 rounded' type='submit'>
+      <button
+        className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
+        type='submit'
+      >
         Submit
       </button>
     </form>

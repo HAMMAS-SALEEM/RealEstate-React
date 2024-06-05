@@ -66,3 +66,12 @@ export const updateEstateAPI = async data => {
     return error
   }
 }
+
+export const searchEstateAPI = async url => {
+  try {
+    const res = await axios.get(url)
+    return res
+  } catch (error) {
+    return error
+  }
+}

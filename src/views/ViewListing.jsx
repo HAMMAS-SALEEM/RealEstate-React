@@ -54,13 +54,13 @@ const ViewListing = () => {
 
   return (
     <div>
-      {/* <NavLink
+      <NavLink
         to={'/dashboard'}
-        className='absolute left-2 top-3 bg-black text-white font-bold px-1 py-0.5 rounded'
+        className='absolute right-5 top-20 bg-black text-white font-bold px-1 py-0.5 rounded'
       >
         Back
-      </NavLink> */}
-      <h2 className='text-center m-5 text-4xl font-bold text-heading-color underline-offset-1'>
+      </NavLink>
+      <h2 className='text-center mt-20 text-4xl font-bold text-heading-color underline-offset-1'>
         My Properties
       </h2>
       <ul className='flex flex-wrap justify-center items-center'>
