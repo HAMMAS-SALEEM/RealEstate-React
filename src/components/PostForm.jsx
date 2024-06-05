@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
-import formFields from '../rawdata/formField'
+import formFields from '../fields/formField'
 
 const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
   const [locationData, setLocationData] = useState({
