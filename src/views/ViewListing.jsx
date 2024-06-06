@@ -140,9 +140,7 @@ const ViewListing = () => {
           <Loader />
         </div>
       )}
-      {
-        estates.estates.length === 0 && <NoProperties />
-      }
+      {estates.estates.length === 0 && <NoProperties />}
     </div>
   )
 }

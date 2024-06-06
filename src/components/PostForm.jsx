@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
 import formFields from '../fields/formField'
+import estateValidation from '../validations/estateValidation'
+import FieldError from './FieldError'
 
 const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
   const [locationData, setLocationData] = useState({
@@ -11,11 +13,13 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
     singleState: {}
   })
 
-  const getSelectFieldValue = (field) => {
-    if(["furnished", "swimmingPool", "garage", 'balcony'].includes(field)) {
+  const [errors, setErrors] = useState({})
+
+  const getSelectFieldValue = field => {
+    if (['furnished', 'swimmingPool', 'garage', 'balcony'].includes(field)) {
       return data[field] ? 'Yes' : 'No'
-    } else if(["country", "state", "city"].includes(field)) {
-      data.address[field]
+    } else if (['country', 'state', 'city'].includes(field)) {
+      return data.address[field]
     }
     return data[field] || data.address[field] || ''
   }
@@ -85,7 +89,7 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
           locationData.singleCountry.isoCode,
           fState.isoCode
         )
-        if(intervalRef.current === 1 && data.address.city) {
+        if (intervalRef.current === 1 && data.address.city) {
           setData(prev => ({
             ...prev,
             address: {
@@ -119,14 +123,23 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
     setData
   ])
 
+  const onSubmit = e => {
+    e.preventDefault()
+    const validationErrors = estateValidation(data)
+    if (Object.keys(validationErrors).length === 0) {
+      handleSubmit(e)
+    } else {
+      setErrors(validationErrors)
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
+    <form onSubmit={onSubmit} className='flex flex-col gap-3'>
       {formFields.map((field, index) => (
         <div key={index} className='flex flex-col'>
           <label className='text-heading-color font-bold'>{field.label}:</label>
           {field.type === 'select' ? (
             <select
-              required
               className='border py-1 indent-3'
               onChange={handleChange}
               name={field.name}
@@ -150,7 +163,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
             </select>
           ) : (
             <input
-              required
               className='border py-1 indent-3'
               onChange={handleChange}
               type={field.type}
@@ -159,6 +171,15 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
               value={data[field.name] || data.address[field.name] || ''}
             />
           )}
+          {errors[field.name] && (
+            <FieldError error={(errors[field.name]).toUpperCase()} />
+          )}
+          {errors[field.name] === undefined &&
+            field.name.startsWith('address.') &&
+            errors[field.name.split('.')[1]] && (
+              <FieldError error={(errors[field.name.split('.')[1]]).toUpperCase()} />
+              
+            )}
         </div>
       ))}
       <button
