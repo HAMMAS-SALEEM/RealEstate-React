@@ -23,8 +23,8 @@ const App = () => {
   const navigate = useNavigate()
 
   const user = useSelector(store => store.auth)
-  const token = cookieGetter();
-  
+  const token = cookieGetter()
+
   const location = useLocation()
 
   useEffect(() => {
@@ -37,10 +37,10 @@ const App = () => {
   return (
     <Suspense fallback={<GridLoader />}>
       <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/estate/:id' element={<Detail />} />
         <Route element={<ProtectedRoute user={user.signedIn} />}>
-          <Route path='/' element={<Home />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/estate/:id' element={<Detail />} />
           <Route path='/create_post' element={<CreatePost />} />
           <Route path='/view_listing' element={<ViewListing />} />
           <Route path='/search' element={<Search />} />

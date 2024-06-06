@@ -13,6 +13,7 @@ const EstateList = () => {
   const [error, setError] = useState(false)
 
   const handleGetEstates = () => {
+    setError(false)
     setLoading(true)
     getApiEstates()
       .then(estates => {
