@@ -11,20 +11,35 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
     singleState: {}
   })
 
+  const getSelectFieldValue = (field) => {
+    if(["furnished", "swimmingPool", "garage", 'balcony'].includes(field)) {
+      return data[field] ? 'Yes' : 'No'
+    } else if(["country", "state", "city"].includes(field)) {
+      data.address[field]
+    }
+    return data[field] || data.address[field] || ''
+  }
+
   let intervalRef = useRef(1)
 
   useEffect(() => {
     const loadCountries = async () => {
       const countryData = Country.getAllCountries()
-      setData(prev => ({
-        ...prev,
-        address: { ...prev.address, country: countryData[0].name }
-      }))
+      if (intervalRef.current === 1 && data.address.country) {
+        setData(prev => ({
+          ...prev,
+          address: { ...prev.address, country: data.address.country }
+        }))
+      } else {
+        setData(prev => ({
+          ...prev,
+          address: { ...prev.address, country: countryData[0].name }
+        }))
+      }
       setLocationData(prev => ({ ...prev, countries: countryData }))
     }
-    intervalRef.current = intervalRef.current + 1
     loadCountries()
-  }, [setData])
+  }, [])
 
   useEffect(() => {
     if (data.address.country) {
@@ -33,13 +48,23 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       )
       if (fCountry) {
         const states = State.getStatesOfCountry(fCountry.isoCode)
-        setData(prev => ({
-          ...prev,
-          address: {
-            ...prev.address,
-            state: states.length > 0 ? states[0].name : 'NA'
-          }
-        }))
+        if (intervalRef.current === 1 && data.address.state) {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              state: data.address.state
+            }
+          }))
+        } else {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              state: states.length > 0 ? states[0].name : 'NA'
+            }
+          }))
+        }
         setLocationData(prev => ({
           ...prev,
           singleCountry: fCountry,
@@ -60,13 +85,23 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
           locationData.singleCountry.isoCode,
           fState.isoCode
         )
-        setData(prev => ({
-          ...prev,
-          address: {
-            ...prev.address,
-            city: cities.length > 0 ? cities[0].name : 'NA'
-          }
-        }))
+        if(intervalRef.current === 1 && data.address.city) {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              city: data.address.city
+            }
+          }))
+        } else {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              city: cities.length > 0 ? cities[0].name : 'NA'
+            }
+          }))
+        }
         setLocationData(prev => ({
           ...prev,
           singleState: fState,
@@ -75,13 +110,19 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       } else {
         setData(prev => ({ ...prev, address: { ...prev.address, city: 'NA' } }))
       }
+      intervalRef.current = intervalRef.current + 1
     }
-  }, [data.address.state, locationData.states, locationData.singleCountry, setData])
+  }, [
+    data.address.state,
+    locationData.states,
+    locationData.singleCountry,
+    setData
+  ])
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
       {formFields.map((field, index) => (
-        <div key={index} className="flex flex-col">
+        <div key={index} className='flex flex-col'>
           <label className='text-heading-color font-bold'>{field.label}:</label>
           {field.type === 'select' ? (
             <select
@@ -89,10 +130,20 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
               className='border py-1 indent-3'
               onChange={handleChange}
               name={field.name}
-              value={data[field.name]}
+              value={getSelectFieldValue(field.name)}
             >
-              {(field.name === 'city' ? locationData.cities : field.name === 'state' ? locationData.states : field.name === 'country' ? locationData.countries : field.options).map(option => (
-                <option key={option.name || option} value={option.name || option}>
+              {(field.name === 'city'
+                ? locationData.cities
+                : field.name === 'state'
+                ? locationData.states
+                : field.name === 'country'
+                ? locationData.countries
+                : field.options
+              ).map(option => (
+                <option
+                  key={option.name || option}
+                  value={option.name || option}
+                >
                   {option.name || option}
                 </option>
               ))}
@@ -105,15 +156,11 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
               type={field.type}
               placeholder={field.placeholder}
               name={field.name}
-              value={data[field.name] || data.address[field.name]}
+              value={data[field.name] || data.address[field.name] || ''}
             />
           )}
         </div>
       ))}
-
-      <button type="button" onClick={() => console.log(data)}>
-        GetData
-      </button>
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'
