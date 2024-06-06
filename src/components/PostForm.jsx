@@ -125,7 +125,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    console.log(data)
     const validationErrors = estateValidation(data)
     if (Object.keys(validationErrors).length === 0) {
       handleSubmit(e)
