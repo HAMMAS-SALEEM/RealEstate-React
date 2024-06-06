@@ -189,7 +189,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       >
         Submit
       </button>
-      <button type='button' onClick={() => console.log(data)}>GetData</button>
     </form>
   )
 }

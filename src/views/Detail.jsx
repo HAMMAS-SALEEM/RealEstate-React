@@ -54,7 +54,7 @@ const Detail = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-center items-center gap-3">
+                  <div className="flex items-center gap-3">
                     <img src={location} alt={location} />
                     <span className='font-bold text-royal-black p-1 rounded'>
                       {(estate.address.street
