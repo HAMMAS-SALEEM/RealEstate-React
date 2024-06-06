@@ -4,6 +4,7 @@ import AuthForm from '../components/AuthForm'
 import { useDispatch } from 'react-redux'
 import { handleAuth } from '../redux/auth/auth'
 import { NavLink } from 'react-router-dom'
+import AppLayout from '../layout/AppLayout'
 
 const Register = () => {
   const [username, setUsername] = useState('')
@@ -54,4 +55,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default AppLayout()(Register)

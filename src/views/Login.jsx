@@ -5,6 +5,7 @@ import { handleAuth } from '../redux/auth/auth'
 import AuthForm from '../components/AuthForm'
 import { NavLink } from 'react-router-dom'
 import { deleteCookie } from '../utils/cookieHandler'
+import AppLayout from '../layout/AppLayout'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -69,4 +70,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default AppLayout()(Login)
