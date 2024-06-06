@@ -5,14 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import SingleEstate from './SingleEstate'
 import Loader from './Loader'
 import { NavLink } from 'react-router-dom'
+import NoProperties from './NoProperties'
 
 const EstateList = () => {
   const dispatch = useDispatch()
   const realEstates = useSelector(store => store.estates)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [noDataMessage, setNoDataMessage] = useState(false)
 
   const handleGetEstates = () => {
+    setNoDataMessage(false)
     setError(false)
     setLoading(true)
     getApiEstates()
@@ -20,8 +23,12 @@ const EstateList = () => {
         dispatch(addEstates(estates.data.estates))
         setLoading(false)
         setError(false)
+        if (estates.data.estates.length === 0) {
+          setNoDataMessage(true)
+        }
       })
       .catch(error => {
+        console.log(error)
         setLoading(false)
         setError(true)
         return error
@@ -29,7 +36,7 @@ const EstateList = () => {
   }
 
   useEffect(() => {
-    if(realEstates.estates.length === 0) {
+    if (realEstates.estates.length === 0) {
       handleGetEstates()
     }
   }, [])
@@ -60,6 +67,7 @@ const EstateList = () => {
               />
             </NavLink>
           ))}
+        {noDataMessage && <NoProperties />}
         {error && (
           <button
             className='bg-red-500 text-white px-4 py-2 mb-1'
