@@ -1,14 +1,14 @@
 import React from 'react'
 
-const ErrorPopup = ({ text, error, handlePopup }) => {
+const ErrorPopup = ({ errors }) => {
+  const arr = Object.values(errors)
+
   return (
-    <>
-      {error && (
-        <div>
-          <h3>{text}</h3>
-        </div>
-      )}
-    </>
+    <ul className="bg-red-500 p-2 m-5">
+      {arr && arr.map((error, index) => {
+        return <li className="text-white font-bold" key={error + index}>- {error}</li>
+      })}
+    </ul>
   )
 }
 

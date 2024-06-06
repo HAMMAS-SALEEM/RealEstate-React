@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
+import formFields from '../fields/formField'
+import estateValidation from '../validations/estateValidation'
+import FieldError from './FieldError'
 
 const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
   const [locationData, setLocationData] = useState({
@@ -10,53 +13,74 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
     singleState: {}
   })
 
+  const [errors, setErrors] = useState({})
+
+  const getSelectFieldValue = field => {
+    if (['furnished', 'swimmingPool', 'garage', 'balcony'].includes(field)) {
+      return data[field] ? 'Yes' : 'No'
+    } else if (['country', 'state', 'city'].includes(field)) {
+      return data.address[field]
+    }
+    return data[field] || data.address[field] || ''
+  }
+
   let intervalRef = useRef(1)
 
   useEffect(() => {
     const loadCountries = async () => {
       const countryData = Country.getAllCountries()
-      // if (intervalRef.current === 0 && data.address.country.length > 0) {
+      if (intervalRef.current === 1 && data.address.country) {
+        setData(prev => ({
+          ...prev,
+          address: { ...prev.address, country: data.address.country }
+        }))
+      } else {
         setData(prev => ({
           ...prev,
           address: { ...prev.address, country: countryData[0].name }
         }))
-      // }
+      }
       setLocationData(prev => ({ ...prev, countries: countryData }))
     }
-    intervalRef.current = intervalRef.current + 1
     loadCountries()
   }, [])
 
   useEffect(() => {
     if (data.address.country) {
-      console.log("Set State")
       const fCountry = locationData.countries.find(
         c => c.name === data.address.country
       )
       if (fCountry) {
         const states = State.getStatesOfCountry(fCountry.isoCode)
-        setData(prev => ({
-          ...prev,
-          address: {
-            ...prev.address,
-            state: states.length > 0 ? states[0].name : 'NA'
-          }
-        }))
-        console.log("Set State")
+        if (intervalRef.current === 1 && data.address.state) {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              state: data.address.state
+            }
+          }))
+        } else {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              state: states.length > 0 ? states[0].name : 'NA'
+            }
+          }))
+        }
         setLocationData(prev => ({
           ...prev,
           singleCountry: fCountry,
-          states: states ? states : [],
+          states: states.length > 0 ? states : [{ name: 'NA' }],
           cities: []
         }))
-        
       }
     }
-  }, [data.address.country])
+  }, [data.address.country, locationData.countries, setData])
 
   useEffect(() => {
     if (data.address.state && locationData.singleCountry.isoCode) {
-      console.log('Set City')
       const fState = locationData.states.find(
         s => s.name === data.address.state
       )
@@ -65,234 +89,100 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
           locationData.singleCountry.isoCode,
           fState.isoCode
         )
-        setData(prev => ({
-          ...prev,
-          address: {
-            ...prev.address,
-            city: cities.length > 0 ? cities[0].name : 'NA'
-          }
-        }))
-        console.log('Set City')
+        if (intervalRef.current === 1 && data.address.city) {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              city: data.address.city
+            }
+          }))
+        } else {
+          setData(prev => ({
+            ...prev,
+            address: {
+              ...prev.address,
+              city: cities.length > 0 ? cities[0].name : 'NA'
+            }
+          }))
+        }
         setLocationData(prev => ({
           ...prev,
           singleState: fState,
-          cities: cities ? cities : []
+          cities: cities.length > 0 ? cities : [{ name: 'NA' }]
         }))
       } else {
         setData(prev => ({ ...prev, address: { ...prev.address, city: 'NA' } }))
       }
+      intervalRef.current = intervalRef.current + 1
     }
-  }, [data.address.state, locationData.states, locationData.singleCountry])
+  }, [
+    data.address.state,
+    locationData.states,
+    locationData.singleCountry,
+    setData
+  ])
+
+  const onSubmit = e => {
+    e.preventDefault()
+    const validationErrors = estateValidation(data)
+    if (Object.keys(validationErrors).length === 0) {
+      handleSubmit(e)
+      setErrors({})
+    } else {
+      setErrors(validationErrors)
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
-      <label className='text-heading-color font-bold'>Name:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='name'
-        value={data.name}
-      >
-        <option value='House'>House</option>
-        <option value='House Upper Portion'>House Upper Portion</option>
-        <option value='House Lower Portion'>House Lower Portion</option>
-        <option value='Flat'>Flat</option>
-        <option value='Villa'>Villa</option>
-        <option value='Office Floor'>Office Floor</option>
-        <option value='Building'>Building</option>
-        <option value='Plot'>Plot</option>
-      </select>
-      <label className='text-heading-color font-bold'>Price:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Price'
-        value={data.price}
-        name='price'
-      />
-      <label className='text-heading-color font-bold'>Property Area:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Property Area'
-        value={data.propertySize}
-        name='propertySize'
-      />
-      <label className='text-heading-color font-bold'>Street:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Street'
-        name='street'
-        value={data.address.street}
-      />
-      <label className='text-heading-color font-bold'>City:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='city'
-        value={data.address.city}
-      >
-
-        {locationData.cities && <option value='NA'>NA</option>}
-        {locationData.cities.map(city => (
-          <option key={city.name} value={city.name}>
-            {city.name}
-          </option>
-        ))}
-      </select>
-      <label className='text-heading-color font-bold'>State:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='state'
-        value={data.address.state}
-      >
-        {locationData.states && <option value='NA'>NA</option>}
-        {locationData.states.map(state => (
-          <option key={state.name} value={state.name}>
-            {state.name}
-          </option>
-        ))}
-      </select>
-      <label className='text-heading-color font-bold'>Country:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='country'
-        value={data.address.country}
-      >
-        {locationData.countries.map(country => (
-          <option key={country.name} value={country.name}>
-            {country.name}
-          </option>
-        ))}
-      </select>
-      <label className='text-heading-color font-bold'>Image URL:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Image'
-        name='image'
-        value={data.image}
-      />
-      <label className='text-heading-color font-bold'>Type:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='type'
-        value={data.type}
-      >
-        <option value='For Sale'>For Sale</option>
-        <option value='For Rent'>For Rent</option>
-      </select>
-      <label className='text-heading-color font-bold'>Bedrooms:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Bedrooms'
-        name='bedrooms'
-        value={data.bedrooms}
-      />
-      <label className='text-heading-color font-bold'>Bathrooms:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Bathrooms'
-        name='bathrooms'
-        value={data.bathrooms}
-      />
-      <label className='text-heading-color font-bold'>Furnished:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='furnished'
-        value={data.furnished ? 'Yes' : 'No'}
-      >
-        <option value='Yes'>Yes</option>
-        <option value='No'>No</option>
-      </select>
-      <label className='text-heading-color font-bold'>Garage:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='garage'
-        value={data.garage ? 'Yes' : 'No'}
-      >
-        <option value='Yes'>Yes</option>
-        <option value='No'>No</option>
-      </select>
-      <label className='text-heading-color font-bold'>Swimming Pool:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='swimmingPool'
-        value={data.swimmingPool ? 'Yes' : 'No'}
-      >
-        <option value='Yes'>Yes</option>
-        <option value='No'>No</option>
-      </select>
-      <label className='text-heading-color font-bold'>Balcony:</label>
-      <select
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        name='balcony'
-        value={data.balcony ? 'Yes' : 'No'}
-      >
-        <option value='Yes'>Yes</option>
-        <option value='No'>No</option>
-      </select>
-      <label className='text-heading-color font-bold'>Total Rooms:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Total Rooms'
-        value={data.rooms}
-        name='rooms'
-      />
-      <label className='text-heading-color font-bold'>Floors:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Floors'
-        value={data.floors}
-        name='floors'
-      />
-      <label className='text-heading-color font-bold'>Phone Number:</label>
-      <input
-        required
-        className='border py-1 indent-3'
-        onChange={handleChange}
-        type='text'
-        placeholder='Phone Number'
-        value={data.phoneNumber}
-        name='phoneNumber'
-      />
+    <form onSubmit={onSubmit} className='flex flex-col gap-3'>
+      {formFields.map((field, index) => (
+        <div key={index} className='flex flex-col'>
+          <label className='text-heading-color font-bold'>{field.label}:</label>
+          {field.type === 'select' ? (
+            <select
+              className='border py-1 indent-3'
+              onChange={handleChange}
+              name={field.name}
+              value={getSelectFieldValue(field.name)}
+            >
+              {(field.name === 'city'
+                ? locationData.cities
+                : field.name === 'state'
+                ? locationData.states
+                : field.name === 'country'
+                ? locationData.countries
+                : field.options
+              ).map(option => (
+                <option
+                  key={option.name || option}
+                  value={option.name || option}
+                >
+                  {option.name || option}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              className='border py-1 indent-3'
+              onChange={handleChange}
+              type={field.type}
+              placeholder={field.placeholder}
+              name={field.name}
+              value={data[field.name] || data.address[field.name] || ''}
+            />
+          )}
+          {errors[field.name] && (
+            <FieldError error={(errors[field.name]).toUpperCase()} />
+          )}
+          {errors[field.name] === undefined &&
+            field.name.startsWith('address.') &&
+            errors[field.name.split('.')[1]] && (
+              <FieldError error={(errors[field.name.split('.')[1]]).toUpperCase()} />
+              
+            )}
+        </div>
+      ))}
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'

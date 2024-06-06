@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppLayout from '../layout/AppLayout'
 import { searchEstateAPI } from '../services/estates-service'
 import { useDispatch, useSelector } from 'react-redux'
-import { setSearch } from '../redux/search/search'
+import { resetSearch, setSearch } from '../redux/search/search'
 import SingleEstate from '../components/SingleEstate'
 import Loader from '../components/Loader'
 import { filterObjectByKey } from '../utils/objectHandler'
@@ -13,6 +13,7 @@ const Search = () => {
   const [initailMessage, setInitialMessage] = useState(true)
   const [noDataMessage, setNoDataMessage] = useState(false)
   const [searchParams, setSearchParams] = useState({})
+
 
   const dispatch = useDispatch()
 
@@ -42,6 +43,10 @@ const Search = () => {
       dispatch(setSearch(res.data.searched))
     return finalURL;
   }
+
+  useEffect(() => {
+    dispatch(resetSearch())
+  }, [])
   return (
     <>
       <form

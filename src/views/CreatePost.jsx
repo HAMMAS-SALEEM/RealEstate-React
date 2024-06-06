@@ -7,30 +7,10 @@ import SuccessMessage from '../components/SuccessMessage'
 import ErrorMessage from '../components/ErrorMessage'
 import Loader from '../components/Loader'
 import AppLayout from '../layout/AppLayout'
+import initialState from '../initialStates/createInitial'
 
 const CreatePost = () => {
-  const [data, setData] = useState({
-    name: 'House',
-    price: '',
-    propertySize: '',
-    address: {
-      street: '',
-      city: '',
-      state: '',
-      country: '',
-    },
-    image: '',
-    type: 'For Sale',
-    bedrooms: '',
-    bathrooms: '',
-    furnished: false,
-    garage: false,
-    swimmingPool: false,
-    balcony: false,
-    floors: "",
-    rooms: "",
-    phoneNumber: ""
-  })
+  const [data, setData] = useState(initialState)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
@@ -62,6 +42,7 @@ const CreatePost = () => {
       dispatch(createEstate(res.data.estate))
       setSuccess(true)
       setLoading(false)
+      setData(initialState)
     } else {
       setError(true)
       setLoading(false)

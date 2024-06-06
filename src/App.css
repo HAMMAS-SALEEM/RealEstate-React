@@ -42,6 +42,7 @@
 .navbar-btns {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 20%;
   row-gap: 5px;
   background-color: white;
@@ -50,7 +51,7 @@
 
 .navbar-open {
   transform: translateX(0);
-  z-index: 1;
+  z-index: 101;
 }
 
 .navbar-close {
@@ -154,18 +155,6 @@
   border: none;
 }
 
-.estate-link-to-details {
-  text-decoration: none;
-  background-color: bisque;
-  color: black;
-  font-weight: 900;
-  width: 92%;
-  padding: 6px 0;
-  text-align: center;
-  align-self: center;
-  display: none;
-}
-
 .estate-title,
 .estate-description {
   text-align: justify;
@@ -196,7 +185,7 @@
   display: none;
 }
 
-@media screen and (min-width: 585px) {
+@media screen and (min-width: 895px) {
   .intro-container {
     background: url(./assets/findProperty.jpg);
     background-size: cover;
@@ -205,17 +194,21 @@
   .estate-detail-card {
     flex-direction: row;
     gap: 30px;
-    justify-content: space-evenly;
+    justify-content: center;
   }
 
   .estate-detail-sub-container {
     width: 300px;
-    background-color: bisque;
     padding: 30px;
+    margin: 0;
+  }
+
+  .estate-detail-image-container {
+    width: 60%;
   }
 
   .estate-detail-image {
-    width: 400px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
   }
 }

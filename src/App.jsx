@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PublicRoute from './routes/PublicRoutes'
 import ProtectedRoute from './routes/ProtectedRoutes'
 import { cookieGetter } from './utils/cookieHandler'
+import GridLoader from './views/GridLoader'
 
 const Home = lazy(() => import('./views/Home'))
 const Detail = lazy(() => import('./views/Detail'))
@@ -22,8 +23,8 @@ const App = () => {
   const navigate = useNavigate()
 
   const user = useSelector(store => store.auth)
-  const token = cookieGetter();
-  
+  const token = cookieGetter()
+
   const location = useLocation()
 
   useEffect(() => {
@@ -34,12 +35,12 @@ const App = () => {
   }, [token, user.signedIn, dispatch, navigate])
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<GridLoader />}>
       <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/estate/:id' element={<Detail />} />
         <Route element={<ProtectedRoute user={user.signedIn} />}>
-          <Route path='/' element={<Home />} />
           <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/product/:id' element={<Detail />} />
           <Route path='/create_post' element={<CreatePost />} />
           <Route path='/view_listing' element={<ViewListing />} />
           <Route path='/search' element={<Search />} />

@@ -10,6 +10,7 @@ import SuccessMessage from '../components/SuccessMessage'
 import SuccessPopup from '../components/SuccessPopup'
 import Loader from '../components/Loader'
 import AppLayout from '../layout/AppLayout'
+import NoProperties from '../components/NoProperties'
 
 const ViewListing = () => {
   const estates = useSelector(state => state.estates)
@@ -23,7 +24,7 @@ const ViewListing = () => {
 
   const handleError = () => setError(prev => !prev)
   const handleSuccess = () => setSuccess(prev => !prev)
-  const handleUpdateSuccess = () => setUpdateSuccess(prev =>!prev)
+  const handleUpdateSuccess = () => setUpdateSuccess(prev => !prev)
   const handleLoading = () => setIsLoading(prev => !prev)
 
   const reduxEstates = useSelector(store => store.estates)
@@ -139,6 +140,7 @@ const ViewListing = () => {
           <Loader />
         </div>
       )}
+      {estates.estates.length === 0 && <NoProperties />}
     </div>
   )
 }
