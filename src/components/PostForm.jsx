@@ -125,9 +125,11 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   const onSubmit = e => {
     e.preventDefault()
+    console.log(data)
     const validationErrors = estateValidation(data)
     if (Object.keys(validationErrors).length === 0) {
       handleSubmit(e)
+      setErrors({})
     } else {
       setErrors(validationErrors)
     }
@@ -188,6 +190,7 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       >
         Submit
       </button>
+      <button type='button' onClick={() => console.log(data)}>GetData</button>
     </form>
   )
 }
