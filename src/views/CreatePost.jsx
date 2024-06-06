@@ -14,6 +14,7 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState({})
 
   const dispatch = useDispatch()
 
@@ -42,7 +43,6 @@ const CreatePost = () => {
       dispatch(createEstate(res.data.estate))
       setSuccess(true)
       setLoading(false)
-      setData(initialState)
     } else {
       setError(true)
       setLoading(false)
