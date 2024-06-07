@@ -20,17 +20,35 @@ const CreatePost = () => {
   const handleSuccess = () => setSuccess(prev => !prev)
   const handleError = () => setError(prev => !prev)
 
-  const handleChange = e => {
-    const { name, value } = e.target
-
-    if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
-      setData({ ...data, [name]: value === 'Yes' })
-    } else if (['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)) {
-      setData({ ...data, [name]: Number(value) })
-    } else if (['street', 'city', 'state', 'country'].includes(name)) {
-      setData({ ...data, address: { ...data.address, [name]: value } })
+  const TransformFile = (file) => {
+    const reader = new FileReader();
+    if(file) {
+      reader.readAsDataURL(file)
+      reader.onloadend = () => {
+        setData({ ...data, uploadedIMG: reader.result})
+      }
     } else {
-      setData({ ...data, [name]: value })
+      setData({ ...data, uploadedIMG: ''})
+    }
+  }
+
+  const handleChange = e => {
+    if (e.target.name === 'uploadedIMG') {
+      TransformFile(e.target.files[0])
+    } else {
+      const { name, value } = e.target
+
+      if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
+        setData({ ...data, [name]: value === 'Yes' })
+      } else if (
+        ['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)
+      ) {
+        setData({ ...data, [name]: Number(value) })
+      } else if (['street', 'city', 'state', 'country'].includes(name)) {
+        setData({ ...data, address: { ...data.address, [name]: value } })
+      } else {
+        setData({ ...data, [name]: value })
+      }
     }
   }
 
@@ -59,7 +77,7 @@ const CreatePost = () => {
         setData={setData}
         data={data}
       />
-      <div className="fixed top-0 left-0 right-0">
+      <div className='fixed top-0 left-0 right-0'>
         <SuccessMessage
           text={'Post Created Successfully'}
           success={success}

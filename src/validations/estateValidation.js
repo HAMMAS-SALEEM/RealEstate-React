@@ -40,12 +40,12 @@ const estateValidation = data => {
   }
 
   const requiredFields = [
-    'image',
     'bedrooms',
     'bathrooms',
     'floors',
     'rooms',
-    'phoneNumber'
+    'phoneNumber',
+    'uploadedIMG',
   ]
   requiredFields.forEach(field => {
     if (!data[field]) {

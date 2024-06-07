@@ -125,7 +125,9 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   const onSubmit = e => {
     e.preventDefault()
+    console.log('Working123')
     const validationErrors = estateValidation(data)
+    console.log(validationErrors)
     if (Object.keys(validationErrors).length === 0) {
       handleSubmit(e)
       setErrors({})
@@ -173,19 +175,40 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
             />
           )}
           {errors[field.name] && (
-            <FieldError error={(errors[field.name]).toUpperCase()} />
+            <FieldError error={errors[field.name].toUpperCase()} />
           )}
           {errors[field.name] === undefined &&
             field.name.startsWith('address.') &&
             errors[field.name.split('.')[1]] && (
-              <FieldError error={(errors[field.name.split('.')[1]]).toUpperCase()} />
-              
+              <FieldError
+                error={errors[field.name.split('.')[1]].toUpperCase()}
+              />
             )}
         </div>
       ))}
+      {data.uploadedIMG && (
+        <img
+          src={data.uploadedIMG.secure_url || data.uploadedIMG}
+          alt='uploadedImg'
+        />
+      )}
+      <label className='text-heading-color font-bold'>Upload Image:</label>
+      <input
+        type='file'
+        accept='.png, .jpg, .jpeg'
+        name='uploadedIMG'
+        onChange={handleChange}
+      />
+      {errors.uploadedIMG && (
+        <FieldError error={errors.uploadedIMG.toUpperCase()} />
+      )}
+      <span className='bg-black text-white font-bold p-1'>
+        Image size should not be more than 50kb
+      </span>
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'
+        onClick={() => console.log('Button Clicked')}
       >
         Submit
       </button>
