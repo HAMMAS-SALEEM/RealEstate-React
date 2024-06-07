@@ -14,6 +14,7 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
+  const [errorText, setErrorText] = useState("")
 
   const dispatch = useDispatch()
 
@@ -56,12 +57,18 @@ const CreatePost = () => {
     e.preventDefault()
     setLoading(true)
     const res = await postEstateAPI(data)
+    console.log(res)
     if (res.status === 200) {
       dispatch(createEstate(res.data.estate))
       setSuccess(true)
       setLoading(false)
       setData(initialState)
-    } else {
+    } else if (res.response.status === 413) {
+      setErrorText("File too large")
+      setError(true)
+      setLoading(false)
+    } 
+    else {
       setError(true)
       setLoading(false)
     }

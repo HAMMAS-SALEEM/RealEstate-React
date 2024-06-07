@@ -203,12 +203,12 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
         <FieldError error={errors.uploadedIMG.toUpperCase()} />
       )}
       <span className='bg-black text-white font-bold p-1'>
-        Image size should not be more than 50kb
+        Image size should not be more than 5mb
       </span>
+      <button type='button' onClick={() => console.log(data)}>GetState</button>
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'
-        onClick={() => console.log('Button Clicked')}
       >
         Submit
       </button>

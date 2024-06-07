@@ -10,7 +10,8 @@ const UpdatePopup = ({
   setInfo,
   setUpdateSuccess,
   handleLoading,
-  setError
+  setError,
+  setErrorText,
 }) => {
   const [data, setData] = useState(info)
 
@@ -59,13 +60,20 @@ const UpdatePopup = ({
     handleVisibilityPopup()
     handleLoading()
     const res = await updateEstateAPI(data)
+    console.log(res)
     if (res.status === 200) {
       data.uploadedIMG = res.data.uploadRes
       dispatch(updateEstate(data))
       handleLoading()
       setUpdateSuccess(true)
       setError(false)
-    } else {
+    } else if(res.response.status === 413) {
+      setUpdateSuccess(false)
+      handleVisibilityPopup()
+      setError(true)
+      handleLoading()
+      setErrorText("File is too large")
+    }else {
       setUpdateSuccess(false)
       handleVisibilityPopup()
       setError(true)

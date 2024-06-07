@@ -18,6 +18,7 @@ const ViewListing = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
   const [visiblePopup, setVisiblePopup] = useState(false)
   const [updateSuccess, setUpdateSuccess] = useState(false)
   const [info, setInfo] = useState({})
@@ -114,13 +115,14 @@ const ViewListing = () => {
               setUpdateSuccess={setUpdateSuccess}
               handleLoading={handleLoading}
               setError={setError}
+              setErrorText={setErrorText}
             />
           </div>
         </div>
       )}
       <div className='fixed top-0 right-0 left-0'>
         <ErrorMessage
-          text={'Try Again'}
+          text={errorText}
           error={error}
           handleMessage={handleError}
         />
