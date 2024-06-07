@@ -6,7 +6,6 @@ const formFields = [
     { label: 'State', type: 'select', name: 'state', options: [] },
     { label: 'City', type: 'select', name: 'city', options: [] },
     { label: 'Street', type: 'text', name: 'street', placeholder: 'Street' },
-    { label: 'Image URL', type: 'text', name: 'image', placeholder: 'Image' },
     { label: 'Type', type: 'select', name: 'type', options: ['For Sale', 'For Rent'] },
     { label: 'Bedrooms', type: 'number', name: 'bedrooms', placeholder: 'Bedrooms' },
     { label: 'Bathrooms', type: 'number', name: 'bathrooms', placeholder: 'Bathrooms' },

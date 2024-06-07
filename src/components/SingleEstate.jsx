@@ -11,7 +11,6 @@ const SingleEstate = ({
   name,
   propertySize,
   price,
-  image,
   bedrooms,
   bathrooms,
   address,
@@ -22,7 +21,7 @@ const SingleEstate = ({
   return (
     <NavLink to={`/estate/${id}`}>
       <div className='estate-card'>
-        <img src={uploadedIMG.url || image} alt={name} className='estate-image' />
+        <img src={uploadedIMG.secure_url} alt={name} className='estate-image' />
         <h3 className='estate-title'>{name}</h3>
         <div className='flex items-center gap-1 ml-3'>
           <img src={location} alt='location' className='estate-icon' />

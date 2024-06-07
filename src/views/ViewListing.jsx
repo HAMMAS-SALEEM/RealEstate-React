@@ -76,7 +76,6 @@ const ViewListing = () => {
                     name={estate.name}
                     propertySize={estate.propertySize}
                     price={estate.price}
-                    image={estate.image}
                     bedrooms={estate.bedrooms}
                     bathrooms={estate.bathrooms}
                     address={estate.address}

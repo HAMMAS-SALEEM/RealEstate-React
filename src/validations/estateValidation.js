@@ -40,7 +40,6 @@ const estateValidation = data => {
   }
 
   const requiredFields = [
-    'image',
     'bedrooms',
     'bathrooms',
     'floors',

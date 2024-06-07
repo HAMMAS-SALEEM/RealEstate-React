@@ -8,7 +8,6 @@ export default {
     state: 'Badakhshan',
     country: 'Afghanistan'
   },
-  image: '',
   type: 'For Sale',
   bedrooms: '',
   bathrooms: '',
