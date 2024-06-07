@@ -22,8 +22,8 @@ const Detail = () => {
               <div className='estate-detail-card' key={estate._id}>
                 <div className='estate-detail-image-container rounded-3xl overflow-hidden'>
                   <img
-                    src={estate.image}
-                    alt={estate.image}
+                    src={estate.uploadedIMG.secure_url}
+                    alt={estate.uploadedIMG.secure_url}
                     className='estate-detail-image'
                   />
                 </div>

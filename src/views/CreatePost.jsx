@@ -54,7 +54,6 @@ const CreatePost = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    console.log("Working.....")
     setLoading(true)
     const res = await postEstateAPI(data)
     if (res.status === 200) {
