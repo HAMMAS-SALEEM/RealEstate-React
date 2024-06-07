@@ -81,6 +81,7 @@ const ViewListing = () => {
                     bathrooms={estate.bathrooms}
                     address={estate.address}
                     type={estate.type}
+                    uploadedIMG={estate.uploadedIMG || ''}
                   />
                   <div className='flex justify-center items-center'>
                     <button

@@ -18,5 +18,6 @@ export default {
   balcony: false,
   floors: '',
   rooms: '',
-  phoneNumber: ''
+  phoneNumber: '',
+  uploadedIMG: ''
 }

@@ -183,6 +183,11 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
             )}
         </div>
       ))}
+      {
+        data.uploadedIMG && <img src={data.uploadedIMG.secure_url || data.uploadedIMG} alt="uploadedImg" />
+      }
+      <input type="file" accept="image/" name="uploadedIMG" onChange={handleChange} />
+      <button type="button" onClick={() => console.log(data)}>GetData</button>
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'

@@ -63,6 +63,7 @@ const EstateList = () => {
               bathrooms={estate.bathrooms}
               address={estate.address}
               type={estate.type}
+              uploadedIMG={estate.uploadedIMG || ''}
             />
           ))}
         {noDataMessage && <NoProperties />}

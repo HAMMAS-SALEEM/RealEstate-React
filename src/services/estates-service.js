@@ -61,6 +61,7 @@ export const updateEstateAPI = async data => {
         'x-access-token': accessToken
       }
     })
+    console.log(res)
     return res
   } catch (error) {
     return error

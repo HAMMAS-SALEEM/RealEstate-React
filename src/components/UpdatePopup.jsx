@@ -16,17 +16,36 @@ const UpdatePopup = ({
 
   const dispatch = useDispatch()
 
-  const handleChange = e => {
-    const { name, value } = e.target
-
-    if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
-      setData({ ...data, [name]: value === 'Yes' })
-    } else if (['bedrooms', 'bathrooms', 'price'].includes(name)) {
-      setData({ ...data, [name]: Number(value) })
-    } else if (['street', 'city', 'state', 'country'].includes(name)) {
-      setData({ ...data, address: { ...data.address, [name]: value } })
+  const TransformFile = (file) => {
+    const reader = new FileReader();
+    if(file) {
+      reader.readAsDataURL(file)
+      reader.onloadend = () => {
+        setData({ ...data, uploadedIMG: reader.result})
+      }
     } else {
-      setData({ ...data, [name]: value })
+      setData({ ...data, uploadedIMG: ''})
+    }
+  }
+
+  const handleChange = e => {
+    if (e.target.name === 'uploadedIMG') {
+      const file = TransformFile(e.target.files[0])
+      setData({ ...data, uploadedIMG: file })
+    } else {
+      const { name, value } = e.target
+
+      if (['balcony', 'swimmingPool', 'furnished', 'garage'].includes(name)) {
+        setData({ ...data, [name]: value === 'Yes' })
+      } else if (
+        ['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)
+      ) {
+        setData({ ...data, [name]: Number(value) })
+      } else if (['street', 'city', 'state', 'country'].includes(name)) {
+        setData({ ...data, address: { ...data.address, [name]: value } })
+      } else {
+        setData({ ...data, [name]: value })
+      }
     }
   }
 
@@ -41,6 +60,7 @@ const UpdatePopup = ({
     handleLoading()
     const res = await updateEstateAPI(data)
     if (res.status === 200) {
+      data.uploadedIMG = res.data.uploadRes
       dispatch(updateEstate(data))
       handleLoading()
       setUpdateSuccess(true)
