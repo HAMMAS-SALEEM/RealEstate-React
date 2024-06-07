@@ -41,6 +41,7 @@ const UpdatePopup = ({
       } else if (
         ['bedrooms', 'bathrooms', 'price, floors, rooms'].includes(name)
       ) {
+        console.log(name, value)
         setData({ ...data, [name]: Number(value) })
       } else if (['street', 'city', 'state', 'country'].includes(name)) {
         setData({ ...data, address: { ...data.address, [name]: value } })
@@ -60,7 +61,6 @@ const UpdatePopup = ({
     handleVisibilityPopup()
     handleLoading()
     const res = await updateEstateAPI(data)
-    console.log(res)
     if (res.status === 200) {
       data.uploadedIMG = res.data.uploadRes
       dispatch(updateEstate(data))
