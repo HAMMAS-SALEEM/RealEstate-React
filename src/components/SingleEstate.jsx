@@ -17,7 +17,7 @@ const SingleEstate = ({
   type,
   uploadedIMG
 }) => {
-  const formatPrice = formatNumberToCurrency(price, 'Rs.')
+  const formatPrice = formatNumberToCurrency(+price, 'Rs.')
   return (
     <NavLink to={`/estate/${id}`}>
       <div className='estate-card'>

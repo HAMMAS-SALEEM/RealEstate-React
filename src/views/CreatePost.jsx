@@ -57,7 +57,6 @@ const CreatePost = () => {
     e.preventDefault()
     setLoading(true)
     const res = await postEstateAPI(data)
-    console.log(res)
     if (res.status === 200) {
       dispatch(createEstate(res.data.estate))
       setSuccess(true)

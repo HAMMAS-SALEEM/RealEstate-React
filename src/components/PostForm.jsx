@@ -125,9 +125,7 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    console.log('Working123')
     const validationErrors = estateValidation(data)
-    console.log(validationErrors)
     if (Object.keys(validationErrors).length === 0) {
       handleSubmit(e)
       setErrors({})
@@ -205,7 +203,6 @@ const PostForm = ({ handleChange, handleSubmit, setData, data }) => {
       <span className='bg-black text-white font-bold p-1'>
         Image size should not be more than 5mb
       </span>
-      <button type='button' onClick={() => console.log(data)}>GetState</button>
       <button
         className='w-100 mt-3 bg-heading-color hover:bg-black text-white py-1 rounded font-bold'
         type='submit'
